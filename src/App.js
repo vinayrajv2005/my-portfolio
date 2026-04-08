@@ -85,7 +85,7 @@ const achievements = [
     date: "Mar 2025",
     icon: Cpu,
     accent: "#F59E0B",
-    certificate: "https://drive.google.com/open?id=1n03YiUahv4bo6v5rek3yTvRuXop6_Lu-&authuser=0",
+    certificate: "https://drive.google.com/file/d/1n03YiUahv4bo6v5rek3yTvRuXop6_Lu-/preview",
   },
   {
     title: "Python & Machine Learning Bootcamp",
@@ -93,7 +93,7 @@ const achievements = [
     date: "Jul 2025",
     icon: Trophy,
     accent: "#8B5CF6",
-    certificate: "https://drive.google.com/open?id=1kkfU9Ew-5v7NdZMRHt5iOyOBK3MVwZ9J&authuser=0",
+    certificate: "https://drive.google.com/file/d/1kkfU9Ew-5v7NdZMRHt5iOyOBK3MVwZ9J/preview",
   },
   {
     title: "The MERN Stack & Full Stack Dev",
@@ -101,7 +101,7 @@ const achievements = [
     date: "Jan 2025",
     icon: Code2,
     accent: "#10B981",
-    certificate: "https://drive.google.com/file/d/1c3-ViO-oQdAAtlgQJcYv5qM2skE5g2kn/view",
+    certificate: "https://drive.google.com/file/d/1c3-ViO-oQdAAtlgQJcYv5qM2skE5g2kn/preview",
   },
   {
     title: "Artificial Intelligence: Types of AI",
@@ -125,22 +125,11 @@ const achievements = [
     date: "2025",
     icon: Trophy,
     accent: "#F97316",
-    certificate: "https://drive.google.com/file/d/1rxMITBfEQtFNiwmmaC6JelrMJy9o60mg/view?usp=drive_open",
+    certificate: "https://drive.google.com/file/d/1rxMITBfEQtFNiwmmaC6JelrMJy9o60mg/preview",
   },
 ];
 
 const NAV = ["home","about","projects","skills","education","achievements","contact"];
-
-const VINAY_CONTEXT = `You are a helpful assistant on Vinay Raj V's portfolio website. Here is everything about Vinay:
-- Name: Vinay Raj V
-- Role: 6th Semester AIML (Artificial Intelligence & Machine Learning) student
-- Location: Shivamogga, Karnataka, India
-- Skills: Python, Machine Learning, React, Flask, PyTorch, Pandas, NumPy, Scikit-learn, OpenCV, TensorFlow, Node.js, MongoDB, Power BI, Tableau, MS Fabric, Git, Streamlit
-- Projects: 4 AI/ML projects (ClassBridge AI, Fitness Guru, and more)
-- Education: B.E. in AIML, currently in 6th semester
-- Interests: NLP, Computer Vision, Generative AI, MLOps
-- Open to: Internships, collaborations, freelance ML/AI projects
-Answer questions about Vinay warmly and professionally. Keep answers concise (2-4 sentences). If asked something you don't know specifically, say Vinay would be happy to discuss it directly.`;
 
 // ═══════════════════════════════════════════════════════════════
 // CERTIFICATE MODAL
@@ -154,9 +143,10 @@ function CertificateModal({ achievement, dark, onClose }) {
   const MUTED  = dark ? "#64748b"                 : "#94a3b8";
   const accent = achievement.accent;
 
-  const isPDF = achievement.certificate?.toLowerCase().includes(".pdf") ||
-                achievement.certificate?.toLowerCase().includes("application/pdf") ||
-                achievement.certificate?.toLowerCase().includes("drive.google.com");
+  const isEmbeddable =
+    achievement.certificate?.includes("drive.google.com") ||
+    achievement.certificate?.toLowerCase().includes(".pdf") ||
+    achievement.certificate?.toLowerCase().includes("preview");
 
   useEffect(() => {
     const handleKey = (e) => { if (e.key === "Escape") onClose(); };
@@ -236,12 +226,13 @@ function CertificateModal({ achievement, dark, onClose }) {
 
         <div className="flex-1 overflow-auto p-6 flex items-center justify-center" style={{ minHeight: "300px" }}>
           {achievement.certificate ? (
-            isPDF ? (
+            isEmbeddable ? (
               <iframe
                 src={achievement.certificate}
                 className="w-full rounded-2xl"
                 style={{ height: "500px", border: `0.5px solid ${BORDER}` }}
                 title={achievement.title}
+                allow="autoplay"
               />
             ) : (
               <motion.div
@@ -331,7 +322,7 @@ function CertificateModal({ achievement, dark, onClose }) {
           style={{ borderTop: `0.5px solid ${BORDER}` }}
         >
           <p className="text-xs" style={{ color: MUTED }}>
-            {achievement.certificate ? "Hover image to open full size · Press Esc to close" : "Press Esc to close"}
+            {achievement.certificate ? "Click 'Open Full' to view in browser · Press Esc to close" : "Press Esc to close"}
           </p>
           <div className="flex items-center gap-1.5 text-xs font-bold" style={{ color: accent }}>
             <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: accent }} />
@@ -367,7 +358,6 @@ function PhotoLightbox({ dark, onClose, accent, BG }) {
       className="fixed inset-0 z-[600] flex items-center justify-center p-6"
       style={{ background: "rgba(0,0,0,0.88)", backdropFilter: "blur(20px)", cursor: "pointer" }}
     >
-      {/* Glow ring behind photo */}
       <motion.div
         initial={{ opacity: 0, scale: 0.6 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -377,7 +367,6 @@ function PhotoLightbox({ dark, onClose, accent, BG }) {
         onClick={(e) => e.stopPropagation()}
         style={{ cursor: "default" }}
       >
-        {/* Animated glow */}
         <motion.div
           animate={{ rotate: 360 }}
           transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
@@ -414,7 +403,6 @@ function PhotoLightbox({ dark, onClose, accent, BG }) {
           }}
         />
 
-        {/* Name tag */}
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
@@ -434,7 +422,6 @@ function PhotoLightbox({ dark, onClose, accent, BG }) {
         </motion.div>
       </motion.div>
 
-      {/* Close button */}
       <motion.button
         initial={{ opacity: 0, scale: 0.5 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -453,7 +440,6 @@ function PhotoLightbox({ dark, onClose, accent, BG }) {
         <X className="w-5 h-5" />
       </motion.button>
 
-      {/* ESC hint */}
       <motion.p
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -702,13 +688,16 @@ function SkillCategoriesGrid({ dark }) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// AI CHATBOT
+// AI CHATBOT  ✅ FIXED — calls /api/chat proxy instead of Anthropic directly
 // ═══════════════════════════════════════════════════════════════
 
 function ChatBot({ dark, onClose }) {
-  const [msgs, setMsgs] = useState([{ role: "assistant", text: "Hi! I'm Vinay's AI assistant 🤖 Ask me anything about him — projects, skills, availability for internships, or anything else!" }]);
+  const [msgs, setMsgs] = useState([
+    { role: "assistant", text: "Hi! I'm Vinay's AI assistant 🤖 Ask me anything about him — projects, skills, availability for internships, or anything else!" }
+  ]);
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
+  const [error, setError]   = useState(null);
   const bottomRef = useRef(null);
 
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs]);
@@ -717,29 +706,40 @@ function ChatBot({ dark, onClose }) {
     if (!input.trim() || loading) return;
     const userMsg = input.trim();
     setInput("");
+    setError(null);
     setMsgs(m => [...m, { role: "user", text: userMsg }]);
     setLoading(true);
+
+    // Build conversation history (exclude the initial greeting from API history)
+    const history = msgs
+      .filter((m, idx) => !(m.role === "assistant" && idx === 0))
+      .map(m => ({ role: m.role, content: m.text }));
+
+    history.push({ role: "user", content: userMsg });
+
     try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
+      // ✅ KEY FIX: Call our own serverless proxy at /api/chat
+      // This keeps the Anthropic API key secret on the server side.
+      const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: VINAY_CONTEXT,
-          messages: [
-            ...msgs.filter(m => m.role !== "assistant" || msgs.indexOf(m) > 0).map(m => ({ role: m.role, content: m.text })),
-            { role: "user", content: userMsg }
-          ]
-        })
+        body: JSON.stringify({ messages: history }),
       });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        throw new Error(errData.error || `Server error ${res.status}`);
+      }
+
       const data = await res.json();
-      const reply = data.content?.[0]?.text || "Sorry, I couldn't get a response.";
-      setMsgs(m => [...m, { role: "assistant", text: reply }]);
-    } catch {
+      setMsgs(m => [...m, { role: "assistant", text: data.reply }]);
+    } catch (err) {
+      console.error("Chat error:", err);
+      setError("Couldn't reach the AI. Please try again in a moment.");
       setMsgs(m => [...m, { role: "assistant", text: "Oops! Something went wrong. Please try again." }]);
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   const bg = dark ? "#0f172a" : "#ffffff";
@@ -759,12 +759,16 @@ function ChatBot({ dark, onClose }) {
       style={{ background: bg, border: `1px solid ${border}`, boxShadow: `0 25px 60px rgba(0,0,0,0.4)` }}
       className="fixed bottom-28 right-6 w-80 rounded-3xl z-[200] overflow-hidden flex flex-col"
     >
+      {/* Header */}
       <div style={{ borderBottom: `1px solid ${border}`, background: `linear-gradient(135deg, ${accent}22, transparent)` }} className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-base" style={{ background: accent + "30" }}>🤖</div>
           <div>
             <p className="text-sm font-bold" style={{ color: textColor }}>Ask About Vinay</p>
-            <p className="text-xs" style={{ color: mutedColor }}>AI-powered • Always online</p>
+            <div className="flex items-center gap-1.5">
+              <div className="w-1.5 h-1.5 rounded-full bg-green-400 animate-pulse" />
+              <p className="text-xs" style={{ color: mutedColor }}>AI-powered · Always online</p>
+            </div>
           </div>
         </div>
         <button onClick={onClose} className="p-1 rounded-lg transition-colors" style={{ color: mutedColor }}>
@@ -772,38 +776,75 @@ function ChatBot({ dark, onClose }) {
         </button>
       </div>
 
+      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3 max-h-72">
         {msgs.map((m, i) => (
           <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-            <div className="max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed"
-              style={{ background: m.role === "user" ? userBg : aiBg, color: textColor, border: `0.5px solid ${border}` }}>
+            <div
+              className="max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed"
+              style={{
+                background: m.role === "user" ? userBg : aiBg,
+                color: textColor,
+                border: `0.5px solid ${border}`,
+              }}
+            >
               {m.text}
             </div>
           </div>
         ))}
+
+        {/* Typing indicator */}
         {loading && (
           <div className="flex justify-start">
             <div className="rounded-2xl px-4 py-3 flex gap-1" style={{ background: aiBg, border: `0.5px solid ${border}` }}>
-              {[0,1,2].map(i => <motion.div key={i} className="w-1.5 h-1.5 rounded-full" style={{ background: accent }} animate={{ y: [0,-5,0] }} transition={{ duration: 0.6, delay: i*0.15, repeat: Infinity }} />)}
+              {[0, 1, 2].map(i => (
+                <motion.div
+                  key={i}
+                  className="w-1.5 h-1.5 rounded-full"
+                  style={{ background: accent }}
+                  animate={{ y: [0, -5, 0] }}
+                  transition={{ duration: 0.6, delay: i * 0.15, repeat: Infinity }}
+                />
+              ))}
             </div>
           </div>
         )}
+
         <div ref={bottomRef} />
       </div>
 
+      {/* Suggested quick prompts (shown only when no conversation yet) */}
+      {msgs.length === 1 && (
+        <div className="px-3 pb-2 flex flex-wrap gap-1.5">
+          {["What are his skills?", "Is he open to internships?", "Tell me about ClassBridge AI"].map(q => (
+            <button
+              key={q}
+              onClick={() => { setInput(q); }}
+              className="text-xs px-2.5 py-1 rounded-full font-medium transition-all hover:scale-105"
+              style={{ background: accent + "18", color: accent, border: `0.5px solid ${accent}40` }}
+            >
+              {q}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Input */}
       <div style={{ borderTop: `1px solid ${border}` }} className="p-3 flex gap-2">
         <input
           value={input}
           onChange={e => setInput(e.target.value)}
-          onKeyDown={e => e.key === "Enter" && send()}
-          placeholder="Ask anything..."
+          onKeyDown={e => e.key === "Enter" && !e.shiftKey && send()}
+          placeholder="Ask anything about Vinay…"
           className="flex-1 rounded-xl px-3 py-2 text-sm outline-none"
           style={{ background: inputBg, color: textColor, border: `0.5px solid ${border}` }}
         />
         <motion.button
-          whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.94 }}
+          whileHover={{ scale: 1.08 }}
+          whileTap={{ scale: 0.94 }}
           onClick={send}
-          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
+          disabled={loading || !input.trim()}
+          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 disabled:opacity-40 transition-opacity"
           style={{ background: accent }}
         >
           <Send className="w-4 h-4 text-white" />
@@ -855,7 +896,7 @@ export default function Portfolio() {
   const [showTop, setShowTop] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedCert, setSelectedCert] = useState(null);
-  const [photoOpen, setPhotoOpen] = useState(false); // ← NEW: photo lightbox state
+  const [photoOpen, setPhotoOpen] = useState(false);
   const typed = useTyping(TYPING_ROLES);
   const { scrollYProgress } = useScroll();
   const progressW = useTransform(scrollYProgress, [0,1], ["0%","100%"]);
@@ -907,9 +948,16 @@ export default function Portfolio() {
         className="fixed top-0 left-0 right-0 z-50 backdrop-blur-2xl"
         style={{ background: NAV_BG, borderBottom: `0.5px solid ${CARD_BORDER}` }}>
         <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
-          <motion.span whileHover={{ scale:1.05 }} className="text-xl font-black tracking-tight" style={{ fontFamily:"'Bebas Neue',sans-serif", letterSpacing:"0.05em", color: ACCENT }}>
+          <motion.a
+            href="https://my-portfolio-nmj4.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            whileHover={{ scale:1.05 }}
+            className="text-xl font-black tracking-tight"
+            style={{ fontFamily:"'Bebas Neue',sans-serif", letterSpacing:"0.05em", color: ACCENT, textDecoration: "none" }}
+          >
             VINAY RAJ V
-          </motion.span>
+          </motion.a>
           <div className="hidden lg:flex items-center gap-1">
             {NAV.map(s => (
               <motion.a key={s} href={`#${s}`} whileHover={{ y:-2 }}
@@ -959,13 +1007,11 @@ export default function Portfolio() {
       {/* ── HERO ── */}
       <Section id="home" className="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20">
         <motion.div initial={{ scale:0, opacity:0 }} animate={{ scale:1, opacity:1 }} transition={{ type:"spring", stiffness:180, delay:0.2 }} className="relative mb-8">
-          {/* Spinning gradient ring */}
           <motion.div animate={{ rotate:360 }} transition={{ duration:15, repeat:Infinity, ease:"linear" }}
             className="absolute -inset-3 rounded-full" style={{ background:`conic-gradient(${ACCENT}, #8b5cf6, #ec4899, ${ACCENT})`, padding:"3px" }}>
             <div className="w-full h-full rounded-full" style={{ background: BG }} />
           </motion.div>
 
-          {/* ── PROFILE PHOTO — clickable, fixed zoom ── */}
           <motion.div
             onClick={() => setPhotoOpen(true)}
             whileHover={{ scale: 1.06 }}
@@ -988,10 +1034,9 @@ export default function Portfolio() {
                 width: "100%",
                 height: "100%",
                 objectFit: "cover",
-                objectPosition: "center top", // ← FIXED: was "center 20%" which over-cropped
+                objectPosition: "center top",
               }}
             />
-            {/* Hover overlay hint */}
             <motion.div
               initial={{ opacity: 0 }}
               whileHover={{ opacity: 1 }}
@@ -1009,7 +1054,6 @@ export default function Portfolio() {
             </motion.div>
           </motion.div>
 
-          {/* Online indicator */}
           <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 animate-pulse" style={{ background:"#22c55e", borderColor: BG, zIndex:2 }} />
         </motion.div>
 
@@ -1277,7 +1321,7 @@ export default function Portfolio() {
               { icon:Github,       label:"GitHub",    href:"https://github.com/vinayrajv2005",                        color:"#6b7280" },
               { icon:Linkedin,     label:"LinkedIn",  href:"https://www.linkedin.com/in/vinay-raj-v-b89963341/",      color:"#0ea5e9" },
               { icon:Mail,         label:"Email",     href:"mailto:vinayrajv33@gmail.com",                            color:"#ef4444" },
-              { icon:ExternalLink, label:"Portfolio", href:"#",                                                       color:"#8b5cf6" },
+              { icon:ExternalLink, label:"Portfolio", href:"https://my-portfolio-nmj4.vercel.app/",                   color:"#8b5cf6" },
             ].map(({ icon:Icon, label, href, color },i) => (
               <motion.a key={label} href={href} target={href.startsWith("mailto")?"_self":"_blank"} rel="noopener noreferrer"
                 initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:i*0.1 }}
@@ -1304,13 +1348,20 @@ export default function Portfolio() {
       <footer className="border-t py-8 text-center relative z-10" style={{ borderColor: CARD_BORDER }}>
         <p className="text-xs" style={{ color: MUTED }}>
           © 2026 <span style={{ color: ACCENT, fontWeight:700 }}>Vinay Raj V</span> · Shivamogga, Karnataka
+          <span className="mx-2">·</span>
+          <a
+            href="https://my-portfolio-nmj4.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: ACCENT, fontWeight: 700, textDecoration: "none" }}
+          >
+            my-portfolio-nmj4.vercel.app
+          </a>
           <span className="mx-2">·</span>Built with React + Framer Motion + Claude AI ❤️
         </p>
       </footer>
 
       {/* ── FLOATING BUTTONS ── */}
-
-      {/* Chat toggle */}
       <motion.button whileHover={{ scale:1.12 }} whileTap={{ scale:0.92 }}
         onClick={() => setChatOpen(v=>!v)}
         className="fixed bottom-6 right-6 z-[150] w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-2xl"
@@ -1318,7 +1369,6 @@ export default function Portfolio() {
         {chatOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
       </motion.button>
 
-      {/* Back to top */}
       <AnimatePresence>
         {showTop && (
           <motion.button initial={{ opacity:0, scale:0.5 }} animate={{ opacity:1, scale:1 }} exit={{ opacity:0, scale:0.5 }}
