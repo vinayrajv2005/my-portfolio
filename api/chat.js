@@ -16,21 +16,23 @@ const VINAY_CONTEXT = `You are a helpful assistant on Vinay Raj V's portfolio we
 Answer questions about Vinay warmly and professionally. Keep answers concise (2-4 sentences). If asked something you don't know specifically, say Vinay would be happy to discuss it directly.`;
 
 export default async function handler(req, res) {
-  // CORS headers
   res.setHeader("Access-Control-Allow-Origin", "*");
   res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
   res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
-  if (req.method === "OPTIONS") {
-    return res.status(204).end();
-  }
-
-  if (req.method !== "POST") {
-    return res.status(405).json({ error: "Method not allowed" });
-  }
+  if (req.method === "OPTIONS") return res.status(204).end();
+  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   try {
-    const { messages } = req.body;
+    // Parse body manually if needed
+    let body = req.body;
+    if (typeof body === "string") body = JSON.parse(body);
+
+    const { messages } = body;
+
+    if (!messages || !Array.isArray(messages)) {
+      return res.status(400).json({ error: "Invalid messages format" });
+    }
 
     const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -47,17 +49,18 @@ export default async function handler(req, res) {
       }),
     });
 
+    const data = await anthropicRes.json();
+
     if (!anthropicRes.ok) {
-      const err = await anthropicRes.text();
-      return res.status(anthropicRes.status).json({ error: err });
+      console.error("Anthropic error:", JSON.stringify(data));
+      return res.status(anthropicRes.status).json({ error: data.error?.message || "Anthropic API error" });
     }
 
-    const data = await anthropicRes.json();
     const reply = data.content?.[0]?.text ?? "I'm not sure how to answer that!";
     return res.status(200).json({ reply });
 
   } catch (err) {
-    console.error("Chat error:", err);
+    console.error("Handler error:", err.message);
     return res.status(500).json({ error: err.message });
   }
 }
