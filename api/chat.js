@@ -1,10 +1,4 @@
-// api/chat.js  –  Vercel Serverless Function (Edge-compatible)
-// Place this file at:  /api/chat.js  in your project root
-//
-// In your Vercel dashboard → Project → Settings → Environment Variables
-// add:  ANTHROPIC_API_KEY = sk-ant-xxxxxxxxxxxxxxxx
-
-export const config = { runtime: "edge" };
+// api/chat.js — Vercel Serverless Function (Node.js runtime)
 
 const VINAY_CONTEXT = `You are a helpful assistant on Vinay Raj V's portfolio website. Here is everything about Vinay:
 - Name: Vinay Raj V
@@ -21,25 +15,22 @@ const VINAY_CONTEXT = `You are a helpful assistant on Vinay Raj V's portfolio we
 - Email: vinayrajv33@gmail.com
 Answer questions about Vinay warmly and professionally. Keep answers concise (2-4 sentences). If asked something you don't know specifically, say Vinay would be happy to discuss it directly.`;
 
-export default async function handler(req) {
-  // Allow CORS for your own domain
-  const headers = {
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Methods": "POST, OPTIONS",
-    "Access-Control-Allow-Headers": "Content-Type",
-    "Content-Type": "application/json",
-  };
+export default async function handler(req, res) {
+  // CORS headers
+  res.setHeader("Access-Control-Allow-Origin", "*");
+  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
 
   if (req.method === "OPTIONS") {
-    return new Response(null, { status: 204, headers });
+    return res.status(204).end();
   }
 
   if (req.method !== "POST") {
-    return new Response(JSON.stringify({ error: "Method not allowed" }), { status: 405, headers });
+    return res.status(405).json({ error: "Method not allowed" });
   }
 
   try {
-    const { messages } = await req.json();
+    const { messages } = req.body;
 
     const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
       method: "POST",
@@ -49,7 +40,7 @@ export default async function handler(req) {
         "anthropic-version": "2023-06-01",
       },
       body: JSON.stringify({
-        model: "claude-haiku-4-5-20251001", // Fast & cheap for a chatbot
+        model: "claude-haiku-4-5-20251001",
         max_tokens: 512,
         system: VINAY_CONTEXT,
         messages,
@@ -58,13 +49,15 @@ export default async function handler(req) {
 
     if (!anthropicRes.ok) {
       const err = await anthropicRes.text();
-      return new Response(JSON.stringify({ error: err }), { status: anthropicRes.status, headers });
+      return res.status(anthropicRes.status).json({ error: err });
     }
 
     const data = await anthropicRes.json();
     const reply = data.content?.[0]?.text ?? "I'm not sure how to answer that!";
-    return new Response(JSON.stringify({ reply }), { status: 200, headers });
+    return res.status(200).json({ reply });
+
   } catch (err) {
-    return new Response(JSON.stringify({ error: err.message }), { status: 500, headers });
+    console.error("Chat error:", err);
+    return res.status(500).json({ error: err.message });
   }
 }
