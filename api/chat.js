@@ -1,4 +1,4 @@
-// api/chat.js — Vercel Serverless Function (Node.js runtime)
+// api/chat.js — Vercel Serverless Function using Groq (Free!)
 
 const VINAY_CONTEXT = `You are a helpful assistant on Vinay Raj V's portfolio website. Here is everything about Vinay:
 - Name: Vinay Raj V
@@ -24,39 +24,64 @@ export default async function handler(req, res) {
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   try {
-    // Parse body manually if needed
     let body = req.body;
     if (typeof body === "string") body = JSON.parse(body);
 
-    const { messages } = body;
+    let { messages } = body;
 
     if (!messages || !Array.isArray(messages)) {
       return res.status(400).json({ error: "Invalid messages format" });
     }
 
-    const anthropicRes = await fetch("https://api.anthropic.com/v1/messages", {
+    // Normalize messages
+    messages = messages
+      .filter(m => m.role === "user" || m.role === "assistant")
+      .map(m => ({ role: m.role, content: m.content || m.text || "" }));
+
+    // Must start with user message
+    while (messages.length > 0 && messages[0].role !== "user") {
+      messages.shift();
+    }
+
+    // Remove consecutive duplicate roles
+    const cleaned = [];
+    for (const msg of messages) {
+      if (cleaned.length === 0 || cleaned[cleaned.length - 1].role !== msg.role) {
+        cleaned.push(msg);
+      }
+    }
+
+    if (cleaned.length === 0) {
+      return res.status(400).json({ error: "No valid messages" });
+    }
+
+    // Add system message for Groq
+    const groqMessages = [
+      { role: "system", content: VINAY_CONTEXT },
+      ...cleaned,
+    ];
+
+    const groqRes = await fetch("https://api.groq.com/openai/v1/chat/completions", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "x-api-key": process.env.ANTHROPIC_API_KEY,
-        "anthropic-version": "2023-06-01",
+        "Authorization": `Bearer ${process.env.GROQ_API_KEY}`,
       },
       body: JSON.stringify({
-        model: "claude-3-5-haiku-20241022",
+        model: "llama3-8b-8192",
         max_tokens: 512,
-        system: VINAY_CONTEXT,
-        messages,
+        messages: groqMessages,
       }),
     });
 
-    const data = await anthropicRes.json();
+    const data = await groqRes.json();
 
-    if (!anthropicRes.ok) {
-      console.error("Anthropic error:", JSON.stringify(data));
-      return res.status(anthropicRes.status).json({ error: data.error?.message || "Anthropic API error" });
+    if (!groqRes.ok) {
+      console.error("Groq error:", JSON.stringify(data));
+      return res.status(groqRes.status).json({ error: data.error?.message || "Groq API error" });
     }
 
-    const reply = data.content?.[0]?.text ?? "I'm not sure how to answer that!";
+    const reply = data.choices?.[0]?.message?.content ?? "I'm not sure how to answer that!";
     return res.status(200).json({ reply });
 
   } catch (err) {
