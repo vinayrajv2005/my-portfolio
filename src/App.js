@@ -1357,7 +1357,7 @@ export default function Portfolio() {
           >
             my-portfolio-nmj4.vercel.app
           </a>
-          <span className="mx-2">·</span>Built with React + Framer Motion + Claude AI ❤️
+          <span className="mx-2">·</span>
         </p>
       </footer>
 
