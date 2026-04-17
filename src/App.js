@@ -688,7 +688,139 @@ function SkillCategoriesGrid({ dark }) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// AI CHATBOT  ✅ FIXED — calls /api/chat proxy instead of Anthropic directly
+// CONTACT FORM
+// ═══════════════════════════════════════════════════════════════
+
+function ContactForm({ dark, CARD_BG, CARD_BORDER, TEXT, MUTED, ACCENT }) {
+  const [form, setForm] = useState({ name: "", email: "", message: "" });
+  const [status, setStatus] = useState(null); // null | "sending" | "sent" | "error"
+
+  const inputStyle = {
+    width: "100%",
+    background: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
+    border: `0.5px solid ${CARD_BORDER}`,
+    borderRadius: "14px",
+    padding: "12px 16px",
+    fontSize: "0.875rem",
+    color: TEXT,
+    outline: "none",
+    transition: "border-color 0.2s",
+    fontFamily: "'DM Sans','Nunito',sans-serif",
+  };
+
+  const labelStyle = {
+    display: "block",
+    fontSize: "0.75rem",
+    fontWeight: 700,
+    marginBottom: "6px",
+    color: MUTED,
+    letterSpacing: "0.05em",
+    textTransform: "uppercase",
+  };
+
+  const handleSubmit = async () => {
+    if (!form.name.trim() || !form.email.trim() || !form.message.trim()) return;
+    setStatus("sending");
+    // ── Replace this block with your real endpoint (Formspree, EmailJS, etc.) ──
+    // Example Formspree:
+    // const res = await fetch("https://formspree.io/f/YOUR_ID", {
+    //   method: "POST",
+    //   headers: { "Content-Type": "application/json" },
+    //   body: JSON.stringify({ name: form.name, email: form.email, message: form.message }),
+    // });
+    // if (!res.ok) { setStatus("error"); return; }
+    await new Promise(r => setTimeout(r, 1200)); // simulated delay
+    setStatus("sent");
+    setForm({ name: "", email: "", message: "" });
+    setTimeout(() => setStatus(null), 4000);
+  };
+
+  return (
+    <div
+      className="rounded-3xl p-8 space-y-5"
+      style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}` }}
+    >
+      <div>
+        <label style={labelStyle}>Name</label>
+        <input
+          type="text"
+          placeholder="Your name"
+          value={form.name}
+          onChange={e => setForm(f => ({ ...f, name: e.target.value }))}
+          style={inputStyle}
+          onFocus={e => (e.target.style.borderColor = ACCENT)}
+          onBlur={e => (e.target.style.borderColor = CARD_BORDER)}
+        />
+      </div>
+      <div>
+        <label style={labelStyle}>Email</label>
+        <input
+          type="email"
+          placeholder="your@email.com"
+          value={form.email}
+          onChange={e => setForm(f => ({ ...f, email: e.target.value }))}
+          style={inputStyle}
+          onFocus={e => (e.target.style.borderColor = ACCENT)}
+          onBlur={e => (e.target.style.borderColor = CARD_BORDER)}
+        />
+      </div>
+      <div>
+        <label style={labelStyle}>Message</label>
+        <textarea
+          rows={5}
+          placeholder="Tell me about your project or opportunity..."
+          value={form.message}
+          onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
+          style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }}
+          onFocus={e => (e.target.style.borderColor = ACCENT)}
+          onBlur={e => (e.target.style.borderColor = CARD_BORDER)}
+        />
+      </div>
+
+      <motion.button
+        whileHover={{ scale: status === "sending" ? 1 : 1.02, y: status === "sending" ? 0 : -2 }}
+        whileTap={{ scale: 0.97 }}
+        onClick={handleSubmit}
+        disabled={status === "sending" || status === "sent"}
+        className="w-full py-3.5 rounded-2xl text-sm font-bold text-white flex items-center justify-center gap-2 transition-all"
+        style={{
+          background:
+            status === "sent"
+              ? "linear-gradient(135deg,#10b981,#059669)"
+              : `linear-gradient(135deg, #10b981, #06b6d4)`,
+          boxShadow: "0 8px 30px rgba(16,185,129,0.25)",
+          opacity: status === "sending" ? 0.7 : 1,
+          cursor: status === "sending" || status === "sent" ? "default" : "pointer",
+        }}
+      >
+        {status === "sending" && (
+          <motion.div
+            className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
+            animate={{ rotate: 360 }}
+            transition={{ duration: 0.7, repeat: Infinity, ease: "linear" }}
+          />
+        )}
+        {status === "sent"  && "✓ Message Sent!"}
+        {status === "error" && "Failed — Try Again"}
+        {!status && <><Send className="w-4 h-4" /> Send Message</>}
+      </motion.button>
+
+      {status === "sent" && (
+        <motion.p
+          initial={{ opacity: 0, y: 6 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="text-center text-xs"
+          style={{ color: "#34d399" }}
+        >
+          Thanks! I'll get back to you soon 🙌
+        </motion.p>
+      )}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
+// AI CHATBOT
 // ═══════════════════════════════════════════════════════════════
 
 function ChatBot({ dark, onClose }) {
@@ -710,7 +842,6 @@ function ChatBot({ dark, onClose }) {
     setMsgs(m => [...m, { role: "user", text: userMsg }]);
     setLoading(true);
 
-    // Build conversation history (exclude the initial greeting from API history)
     const history = msgs
       .filter((m, idx) => !(m.role === "assistant" && idx === 0))
       .map(m => ({ role: m.role, content: m.text }));
@@ -718,8 +849,6 @@ function ChatBot({ dark, onClose }) {
     history.push({ role: "user", content: userMsg });
 
     try {
-      // ✅ KEY FIX: Call our own serverless proxy at /api/chat
-      // This keeps the Anthropic API key secret on the server side.
       const res = await fetch("/api/chat", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -759,7 +888,6 @@ function ChatBot({ dark, onClose }) {
       style={{ background: bg, border: `1px solid ${border}`, boxShadow: `0 25px 60px rgba(0,0,0,0.4)` }}
       className="fixed bottom-28 right-6 w-80 rounded-3xl z-[200] overflow-hidden flex flex-col"
     >
-      {/* Header */}
       <div style={{ borderBottom: `1px solid ${border}`, background: `linear-gradient(135deg, ${accent}22, transparent)` }} className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-base" style={{ background: accent + "30" }}>🤖</div>
@@ -776,7 +904,6 @@ function ChatBot({ dark, onClose }) {
         </button>
       </div>
 
-      {/* Messages */}
       <div className="flex-1 overflow-y-auto p-4 space-y-3 max-h-72">
         {msgs.map((m, i) => (
           <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
@@ -793,7 +920,6 @@ function ChatBot({ dark, onClose }) {
           </div>
         ))}
 
-        {/* Typing indicator */}
         {loading && (
           <div className="flex justify-start">
             <div className="rounded-2xl px-4 py-3 flex gap-1" style={{ background: aiBg, border: `0.5px solid ${border}` }}>
@@ -813,7 +939,6 @@ function ChatBot({ dark, onClose }) {
         <div ref={bottomRef} />
       </div>
 
-      {/* Suggested quick prompts (shown only when no conversation yet) */}
       {msgs.length === 1 && (
         <div className="px-3 pb-2 flex flex-wrap gap-1.5">
           {["What are his skills?", "Is he open to internships?", "Tell me about ClassBridge AI"].map(q => (
@@ -829,7 +954,6 @@ function ChatBot({ dark, onClose }) {
         </div>
       )}
 
-      {/* Input */}
       <div style={{ borderTop: `1px solid ${border}` }} className="p-3 flex gap-2">
         <input
           value={input}
@@ -1309,38 +1433,81 @@ export default function Portfolio() {
 
       {/* ── CONTACT ── */}
       <Section id="contact" className="py-28 px-6">
-        <div className="max-w-3xl mx-auto text-center">
+        <div className="max-w-5xl mx-auto">
           <SectionHead eyebrow="Get In Touch" title="Let's Connect" gradient={["#10b981","#06b6d4"]} />
-          <motion.p initial={{ opacity:0 }} whileInView={{ opacity:1 }} viewport={{ once:true }}
-            className="text-base mb-12 leading-relaxed" style={{ color: MUTED }}>
-            Open to internships, collaborations, and AI/ML freelance work.<br />
-            Have something cool in mind? Let's make it happen.
-          </motion.p>
-          <div className="flex flex-wrap justify-center gap-4 mb-12">
-            {[
-              { icon:Github,       label:"GitHub",    href:"https://github.com/vinayrajv2005",                        color:"#6b7280" },
-              { icon:Linkedin,     label:"LinkedIn",  href:"https://www.linkedin.com/in/vinay-raj-v-b89963341/",      color:"#0ea5e9" },
-              { icon:Mail,         label:"Email",     href:"mailto:vinayrajv33@gmail.com",                            color:"#ef4444" },
-              { icon:ExternalLink, label:"Portfolio", href:"https://my-portfolio-nmj4.vercel.app/",                   color:"#8b5cf6" },
-            ].map(({ icon:Icon, label, href, color },i) => (
-              <motion.a key={label} href={href} target={href.startsWith("mailto")?"_self":"_blank"} rel="noopener noreferrer"
-                initial={{ opacity:0, y:20 }} whileInView={{ opacity:1, y:0 }} viewport={{ once:true }} transition={{ delay:i*0.1 }}
-                whileHover={{ y:-6, scale:1.05 }} whileTap={{ scale:0.96 }}
-                className="flex flex-col items-center gap-2 p-5 w-24 rounded-3xl group"
-                style={{ background: CARD_BG, border:`0.5px solid ${CARD_BORDER}` }}>
-                <div className="w-10 h-10 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"
-                  style={{ background: color + "20", border:`0.5px solid ${color}40` }}>
-                  <Icon className="w-5 h-5" style={{ color }} />
-                </div>
-                <span className="text-xs font-semibold" style={{ color: MUTED }}>{label}</span>
-              </motion.a>
-            ))}
+          <div className="grid md:grid-cols-2 gap-12 items-start">
+
+            {/* Left — copy + social links */}
+            <motion.div initial={{ opacity:0, x:-30 }} whileInView={{ opacity:1, x:0 }} viewport={{ once:true }} transition={{ duration:0.6 }}>
+              <h3 className="text-3xl font-black mb-4 leading-tight" style={{ fontFamily:"'Bebas Neue',sans-serif", color: TEXT }}>
+                Open to<br />
+                <span style={{ background:`linear-gradient(135deg, #10b981, #06b6d4)`, WebkitBackgroundClip:"text", WebkitTextFillColor:"transparent" }}>
+                  opportunities
+                </span>
+              </h3>
+              <p className="text-sm leading-relaxed mb-8" style={{ color: MUTED }}>
+                Looking for internships, ML freelance work, or collaborations.<br />
+                Have something cool in mind? I'd love to hear about it.
+              </p>
+
+              <div className="space-y-3">
+                {[
+                  { icon:Github,       label:"GitHub",    sub:"github.com/vinayrajv2005",          href:"https://github.com/vinayrajv2005",                   color:"#6b7280" },
+                  { icon:Linkedin,     label:"LinkedIn",  sub:"vinay-raj-v",                       href:"https://www.linkedin.com/in/vinay-raj-v-b89963341/", color:"#0ea5e9" },
+                  { icon:Mail,         label:"Email",     sub:"vinayrajv33@gmail.com",             href:"mailto:vinayrajv33@gmail.com",                        color:"#ef4444" },
+                  { icon:ExternalLink, label:"Portfolio", sub:"my-portfolio-nmj4.vercel.app",      href:"https://my-portfolio-nmj4.vercel.app/",               color:"#8b5cf6" },
+                ].map(({ icon:Icon, label, sub, href, color }, i) => (
+                  <motion.a
+                    key={label}
+                    href={href}
+                    target={href.startsWith("mailto") ? "_self" : "_blank"}
+                    rel="noopener noreferrer"
+                    initial={{ opacity:0, x:-20 }}
+                    whileInView={{ opacity:1, x:0 }}
+                    viewport={{ once:true }}
+                    transition={{ delay: i * 0.08 }}
+                    whileHover={{ x:6, scale:1.01 }}
+                    whileTap={{ scale:0.98 }}
+                    className="flex items-center gap-4 p-4 rounded-2xl group transition-all"
+                    style={{ background: CARD_BG, border:`0.5px solid ${CARD_BORDER}`, textDecoration:"none" }}
+                  >
+                    <div
+                      className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
+                      style={{ background: color + "20", border:`0.5px solid ${color}40` }}
+                    >
+                      <Icon className="w-5 h-5" style={{ color }} />
+                    </div>
+                    <div className="min-w-0 flex-1">
+                      <p className="text-sm font-bold" style={{ color: TEXT }}>{label}</p>
+                      <p className="text-xs truncate" style={{ color: MUTED }}>{sub}</p>
+                    </div>
+                    <ExternalLink
+                      className="w-3.5 h-3.5 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
+                      style={{ color: MUTED }}
+                    />
+                  </motion.a>
+                ))}
+              </div>
+            </motion.div>
+
+            {/* Right — contact form */}
+            <motion.div
+              initial={{ opacity:0, x:30 }}
+              whileInView={{ opacity:1, x:0 }}
+              viewport={{ once:true }}
+              transition={{ duration:0.6, delay:0.1 }}
+            >
+              <ContactForm
+                dark={dark}
+                CARD_BG={CARD_BG}
+                CARD_BORDER={CARD_BORDER}
+                TEXT={TEXT}
+                MUTED={MUTED}
+                ACCENT={ACCENT}
+              />
+            </motion.div>
+
           </div>
-          <motion.a href="mailto:vinayrajv33@gmail.com" whileHover={{ scale:1.04, y:-3 }} whileTap={{ scale:0.97 }}
-            className="inline-flex items-center gap-2 px-10 py-4 rounded-2xl font-bold text-white"
-            style={{ background:`linear-gradient(135deg, #10b981, #06b6d4)`, boxShadow:"0 8px 30px rgba(16,185,129,0.3)" }}>
-            <Mail className="w-5 h-5" /> Say Hello 👋
-          </motion.a>
         </div>
       </Section>
 
@@ -1358,6 +1525,7 @@ export default function Portfolio() {
             my-portfolio-nmj4.vercel.app
           </a>
           <span className="mx-2">·</span>
+          Crafted with ♥ &amp; lots of ☕
         </p>
       </footer>
 
