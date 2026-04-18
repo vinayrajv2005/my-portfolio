@@ -729,8 +729,23 @@ function ContactForm({ dark, CARD_BG, CARD_BORDER, TEXT, MUTED, ACCENT }) {
     //   body: JSON.stringify({ name: form.name, email: form.email, message: form.message }),
     // });
     // if (!res.ok) { setStatus("error"); return; }
-    await new Promise(r => setTimeout(r, 1200)); // simulated delay
-    setStatus("sent");
+    const res = await fetch("https://formspree.io/f/xaqaovoe", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    name: form.name,
+    email: form.email,
+    message: form.message,
+  }),
+});
+
+if (!res.ok) {
+  setStatus("error");
+  setLoading(false);
+  return;
+}
+
+setStatus("sent");
     setForm({ name: "", email: "", message: "" });
     setTimeout(() => setStatus(null), 4000);
   };
