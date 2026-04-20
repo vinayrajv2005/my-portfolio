@@ -3,7 +3,7 @@ import { motion, useScroll, useTransform, AnimatePresence } from "framer-motion"
 import {
   Mail, Github, Linkedin, ExternalLink, Download, Code2, Award,
   ChevronDown, MapPin, Calendar, Trophy, Cpu, Moon, Sun,
-  MessageCircle, X, Send, Volume2, VolumeX, ArrowUp, Sparkles, Zap,
+  MessageCircle, X, Send, ArrowUp, Sparkles, Zap,
   Brain, Filter, ZoomIn, FileText, Eye, Shield
 } from "lucide-react";
 
@@ -71,7 +71,7 @@ const projects = [
   {
     id: 2,
     title: "Fitness Guru – AI Fitness Trainer",
-    desc: "Fitness Guru is an AI-powered fitness system that uses pose estimation to detect exercises, analyze posture, and provide real-time feedback with interactive performance tracking dashboards. It continuously monitors user movements to ensure correct form and reduce the risk of injury. The system also stores workout data and visualizes progress over time, helping users train smarter and stay consistent.",
+    desc: "Fitness Guru is an AI-powered fitness system that uses pose estimation to detect exercises, analyze posture, and provide real-time feedback with interactive performance tracking dashboards. It continuously monitors user movements to ensure correct form and reduce the risk of injury.",
     tags: ["Computer Vision", "ML", "React", "Flask", "MediaPipe", "Chart.js"],
     gradient: ["#8B5CF6", "#EC4899"],
     github: "https://github.com/vinayrajv2005/ai-fitness-coach",
@@ -80,7 +80,7 @@ const projects = [
   {
     id: 3,
     title: "NEURON — RAG Document Chatbot",
-    desc: "AI-powered RAG (Retrieval-Augmented Generation) chatbot that lets users upload multiple PDFs and chat with them intelligently. Uses local HuggingFace embeddings, FAISS vector search to retrieve relevant document chunks, and a local Flan-T5 LLM to generate grounded, context-aware answers with source citations and multi-turn conversation memory — no API key required.",
+    desc: "AI-powered RAG chatbot that lets users upload multiple PDFs and chat with them intelligently. Uses local HuggingFace embeddings, FAISS vector search to retrieve relevant document chunks, and a local Flan-T5 LLM to generate grounded, context-aware answers — no API key required.",
     tags: ["Python", "FastAPI", "HuggingFace", "Flan-T5", "RAG", "LangChain", "FAISS", "Vector Database", "PDF Processing", "Local LLM", "Transformers", "AI Chatbot", "Document QA"],
     gradient: ["#10B981", "#06B6D4"],
     github: "https://github.com/vinayrajv2005/neuron-rag",
@@ -89,21 +89,21 @@ const projects = [
   {
     id: 4,
     title: "ProteinAI — Structure & Mutation Lab",
-    desc: "Full-stack bioinformatics web app combining two deep learning models: a Bidirectional LSTM that predicts secondary structure (α-Helix / β-Sheet / Coil) per residue, and an MLP with amino acid embeddings + BLOSUM62 features that classifies protein mutations as pathogenic or benign. Features an interactive Three.js 3D molecular viewer (Ball & Stick / Ribbon / Space Fill), per-residue confidence heatmap, structural segment detection, mutation hotspot scanner, Chart.js analytics, and full export (CSV, FASTA, JSON, PNG) — all served via Flask with graceful demo mode when models are untrained.",
-    tags: ["Python", "PyTorch", "BiLSTM", "Flask", "Three.js", "Chart.js", "Bioinformatics", "Deep Learning", "BLOSUM62", "Protein Structure", "Mutation Prediction", "Pathogenicity", "Healthcare AI", "Full-Stack"],
+    desc: "Full-stack bioinformatics web app combining a Bidirectional LSTM for secondary structure prediction and an MLP for pathogenicity classification. Features an interactive Three.js 3D molecular viewer, per-residue confidence heatmap, Chart.js analytics, and full export capabilities.",
+    tags: ["Python", "PyTorch", "BiLSTM", "Flask", "Three.js", "Chart.js", "Bioinformatics", "Deep Learning", "BLOSUM62", "Healthcare AI", "Full-Stack"],
     gradient: ["#F59E0B", "#F97316"],
     github: "https://github.com/vinayrajv2005/protein-structure-predictor",
     year: "2026",
   },
- {
-  id: 5,
-  title: "LexSimplify — Legal Document Intelligence Platform",
-  desc: "Full-stack NLP web app that transforms dense legal documents into plain language using a T5 transformer model. Supports PDF, DOCX, and scanned image input via Tesseract OCR. Features an interactive clause highlighter colour-coding sentences by risk level, a risky clause detector covering 15 clause types (indemnification, arbitration, non-compete, etc.), Flesch readability scoring, TL;DR summary generation, side-by-side document comparison, clause bookmarking, and multilingual translation into 15+ languages including Kannada, Hindi, and Tamil. Exportable as PDF or DOCX — designed to improve legal accessibility for non-experts.",
-  tags: ["Python", "Flask", "T5 Transformer", "NLP", "HuggingFace", "Tesseract OCR", "Deep Learning", "Legal AI", "Multilingual", "Text Simplification", "Document Intelligence", "PDF Processing", "Full-Stack", "Accessibility AI"],
-  gradient: ["#7c3aed", "#f59e0b"],
-  github: "https://github.com/vinayrajv2005/legal-simplifier",
-  year: "2026",
-},
+  {
+    id: 5,
+    title: "LexSimplify — Legal Document Intelligence Platform",
+    desc: "Full-stack NLP web app that transforms dense legal documents into plain language using a T5 transformer model. Supports PDF, DOCX, and scanned image input via Tesseract OCR. Features clause highlighter, risky clause detector, Flesch readability scoring, and multilingual translation into 15+ languages.",
+    tags: ["Python", "Flask", "T5 Transformer", "NLP", "HuggingFace", "Tesseract OCR", "Deep Learning", "Legal AI", "Multilingual", "Text Simplification", "PDF Processing", "Full-Stack"],
+    gradient: ["#7c3aed", "#f59e0b"],
+    github: "https://github.com/vinayrajv2005/legal-simplifier",
+    year: "2026",
+  },
 ];
 
 const education = [
@@ -125,7 +125,7 @@ const patents = [
   {
     id: "6497347",
     title: "AI Based Water Quality Checking Device",
-    authority: "Issued by:UK Intellectual Property Office",
+    authority: "Issued by: UK Intellectual Property Office",
     type: "Certificate of Registration for a UK Design",
     registrationDate: "06 January 2026",
     grantDate: "21 January 2026",
@@ -149,14 +149,32 @@ const patents = [
 const NAV = ["home", "about", "projects", "patents", "skills", "education", "achievements", "contact"];
 
 // ═══════════════════════════════════════════════════════════════
+// GRADIENT TEXT — safe for both light and dark mode
+// ═══════════════════════════════════════════════════════════════
+function GradientText({ dark, from, to, solidColor, children, style = {}, className = "" }) {
+  if (dark) {
+    return (
+      <span className={className} style={{ background: `linear-gradient(135deg, ${from}, ${to})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", display: "inline", ...style }}>
+        {children}
+      </span>
+    );
+  }
+  return (
+    <span className={className} style={{ color: solidColor || from, display: "inline", ...style }}>
+      {children}
+    </span>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════════
 // CERTIFICATE MODAL
 // ═══════════════════════════════════════════════════════════════
 function CertificateModal({ achievement, dark, onClose }) {
-  const BG     = dark ? "rgba(2,6,23,0.97)"     : "rgba(248,250,252,0.97)";
+  const BG     = dark ? "rgba(2,6,23,0.97)"     : "rgba(255,255,255,0.98)";
   const CARD   = dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)";
-  const BORDER = dark ? "rgba(255,255,255,0.1)"  : "rgba(0,0,0,0.1)";
+  const BORDER = dark ? "rgba(255,255,255,0.1)"  : "rgba(0,0,0,0.12)";
   const TEXT   = dark ? "#f1f5f9"                : "#0f172a";
-  const MUTED  = dark ? "#64748b"                : "#94a3b8";
+  const MUTED  = dark ? "#64748b"                : "#64748b";
   const accent = achievement.accent;
 
   const isEmbeddable =
@@ -168,39 +186,24 @@ function CertificateModal({ achievement, dark, onClose }) {
     const handleKey = (e) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", handleKey);
     document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = "";
-    };
+    return () => { document.removeEventListener("keydown", handleKey); document.body.style.overflow = ""; };
   }, [onClose]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      onClick={onClose}
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}
       className="fixed inset-0 z-[500] flex items-center justify-center p-4 md:p-8"
-      style={{ background: "rgba(0,0,0,0.75)", backdropFilter: "blur(16px)" }}
-    >
+      style={{ background: "rgba(0,0,0,0.75)", backdropFilter: "blur(16px)" }}>
       <motion.div
-        initial={{ opacity: 0, scale: 0.85, y: 40 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9, y: 20 }}
-        transition={{ type: "spring", stiffness: 300, damping: 28 }}
+        initial={{ opacity: 0, scale: 0.85, y: 40 }} animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9, y: 20 }} transition={{ type: "spring", stiffness: 300, damping: 28 }}
         onClick={(e) => e.stopPropagation()}
         className="relative w-full max-w-3xl rounded-3xl overflow-hidden flex flex-col"
-        style={{
-          background: BG,
-          border: `1px solid ${accent}40`,
-          boxShadow: `0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px ${accent}20, inset 0 1px 0 rgba(255,255,255,0.05)`,
-          maxHeight: "90vh",
-        }}
-      >
+        style={{ background: BG, border: `1px solid ${accent}40`, boxShadow: `0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px ${accent}20`, maxHeight: "90vh" }}>
         <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${accent}, ${accent}80, transparent)` }} />
         <div className="flex items-center justify-between px-6 py-4"
-          style={{ borderBottom: `0.5px solid ${BORDER}`, background: `linear-gradient(135deg, ${accent}12, transparent)` }}>
+          style={{ borderBottom: `0.5px solid ${BORDER}`, background: `linear-gradient(135deg, ${accent}10, transparent)` }}>
           <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl flex items-center justify-center"
-              style={{ background: accent + "25", border: `0.5px solid ${accent}50` }}>
+            <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: accent + "25", border: `0.5px solid ${accent}50` }}>
               <achievement.icon className="w-5 h-5" style={{ color: accent }} />
             </div>
             <div>
@@ -224,7 +227,6 @@ function CertificateModal({ achievement, dark, onClose }) {
             </motion.button>
           </div>
         </div>
-
         <div className="flex-1 overflow-auto p-6 flex items-center justify-center" style={{ minHeight: "300px" }}>
           {achievement.certificate ? (
             isEmbeddable ? (
@@ -232,36 +234,19 @@ function CertificateModal({ achievement, dark, onClose }) {
                 style={{ height: "500px", border: `0.5px solid ${BORDER}` }}
                 title={achievement.title} allow="autoplay" />
             ) : (
-              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }}
-                transition={{ delay: 0.15 }} className="relative group w-full">
+              <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="relative group w-full">
                 <img src={achievement.certificate} alt={achievement.title}
                   className="w-full rounded-2xl object-contain"
                   style={{ maxHeight: "520px", border: `1px solid ${accent}30`, boxShadow: `0 8px 40px ${accent}20` }}
-                  onError={(e) => {
-                    e.target.style.display = "none";
-                    e.target.nextSibling.style.display = "flex";
-                  }}
-                />
+                  onError={(e) => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
                 <div className="w-full rounded-2xl items-center justify-center flex-col gap-3 py-16"
                   style={{ display: "none", background: CARD, border: `1px dashed ${BORDER}` }}>
                   <FileText className="w-12 h-12" style={{ color: MUTED }} />
                   <p className="text-sm" style={{ color: MUTED }}>Could not load certificate preview</p>
                   <motion.a href={achievement.certificate} target="_blank" rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }}
-                    className="px-5 py-2 rounded-xl text-sm font-bold"
-                    style={{ background: accent + "20", color: accent }}>
-                    Open in new tab
-                  </motion.a>
+                    whileHover={{ scale: 1.05 }} className="px-5 py-2 rounded-xl text-sm font-bold"
+                    style={{ background: accent + "20", color: accent }}>Open in new tab</motion.a>
                 </div>
-                <motion.a href={achievement.certificate} target="_blank" rel="noopener noreferrer"
-                  initial={{ opacity: 0 }} whileHover={{ opacity: 1 }}
-                  className="absolute inset-0 rounded-2xl flex items-center justify-center"
-                  style={{ background: "rgba(0,0,0,0.45)", backdropFilter: "blur(2px)" }}>
-                  <div className="flex items-center gap-2 px-5 py-3 rounded-2xl text-sm font-bold text-white"
-                    style={{ background: accent + "90", boxShadow: `0 4px 20px ${accent}50` }}>
-                    <ZoomIn className="w-4 h-4" /> View Full Size
-                  </div>
-                </motion.a>
               </motion.div>
             )
           ) : (
@@ -275,18 +260,11 @@ function CertificateModal({ achievement, dark, onClose }) {
               <h3 className="text-lg font-bold mb-2" style={{ color: TEXT }}>{achievement.title}</h3>
               <p className="text-sm mb-1" style={{ color: MUTED }}>{achievement.issuer}</p>
               <p className="text-xs font-mono mb-6" style={{ color: accent }}>{achievement.date}</p>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full text-xs font-bold"
-                style={{ background: accent + "15", color: accent, border: `0.5px solid ${accent}40` }}>
-                <Sparkles className="w-3 h-3" /> Certificate coming soon
-              </div>
             </motion.div>
           )}
         </div>
-
         <div className="px-6 py-3 flex items-center justify-between" style={{ borderTop: `0.5px solid ${BORDER}` }}>
-          <p className="text-xs" style={{ color: MUTED }}>
-            {achievement.certificate ? "Click 'Open Full' to view in browser · Press Esc to close" : "Press Esc to close"}
-          </p>
+          <p className="text-xs" style={{ color: MUTED }}>Press Esc to close</p>
           <div className="flex items-center gap-1.5 text-xs font-bold" style={{ color: accent }}>
             <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: accent }} />
             {achievement.issuer}
@@ -301,10 +279,10 @@ function CertificateModal({ achievement, dark, onClose }) {
 // PATENT MODAL
 // ═══════════════════════════════════════════════════════════════
 function PatentModal({ patent, dark, onClose }) {
-  const BG     = dark ? "rgba(2,6,23,0.97)"     : "rgba(248,250,252,0.97)";
-  const BORDER = dark ? "rgba(255,255,255,0.1)"  : "rgba(0,0,0,0.1)";
+  const BG     = dark ? "rgba(2,6,23,0.97)"     : "rgba(255,255,255,0.98)";
+  const BORDER = dark ? "rgba(255,255,255,0.1)"  : "rgba(0,0,0,0.12)";
   const TEXT   = dark ? "#f1f5f9"                : "#0f172a";
-  const MUTED  = dark ? "#64748b"                : "#94a3b8";
+  const MUTED  = dark ? "#64748b"                : "#64748b";
   const CARD   = dark ? "rgba(255,255,255,0.04)" : "rgba(0,0,0,0.04)";
   const accent = patent.accent;
 
@@ -312,10 +290,7 @@ function PatentModal({ patent, dark, onClose }) {
     const handleKey = (e) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", handleKey);
     document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = "";
-    };
+    return () => { document.removeEventListener("keydown", handleKey); document.body.style.overflow = ""; };
   }, [onClose]);
 
   return (
@@ -323,27 +298,19 @@ function PatentModal({ patent, dark, onClose }) {
       className="fixed inset-0 z-[500] flex items-center justify-center p-4 md:p-8"
       style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(20px)" }}>
       <motion.div
-        initial={{ opacity: 0, scale: 0.85, y: 40 }}
-        animate={{ opacity: 1, scale: 1, y: 0 }}
-        exit={{ opacity: 0, scale: 0.9 }}
-        transition={{ type: "spring", stiffness: 280, damping: 28 }}
+        initial={{ opacity: 0, scale: 0.85, y: 40 }} animate={{ opacity: 1, scale: 1, y: 0 }}
+        exit={{ opacity: 0, scale: 0.9 }} transition={{ type: "spring", stiffness: 280, damping: 28 }}
         onClick={(e) => e.stopPropagation()}
         className="relative w-full max-w-4xl rounded-3xl overflow-hidden flex flex-col"
         style={{ background: BG, border: `1px solid ${accent}50`, boxShadow: `0 40px 100px rgba(0,0,0,0.6)`, maxHeight: "92vh" }}>
-
         <div className="h-1.5 w-full flex-shrink-0" style={{ background: "linear-gradient(90deg,#0EA5E9,#6366f1,#8b5cf6)" }} />
-
         <div className="flex items-center justify-between px-6 py-4 flex-shrink-0"
           style={{ borderBottom: `0.5px solid ${BORDER}`, background: `linear-gradient(135deg, ${accent}10, transparent)` }}>
           <div className="flex items-center gap-3">
             <div className="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
-              style={{ background: accent + "20", border: `1px solid ${accent}40` }}>
-              {patent.flag}
-            </div>
+              style={{ background: accent + "20", border: `1px solid ${accent}40` }}>{patent.flag}</div>
             <div>
-              <p className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{ color: accent }}>
-                UK Design Certificate · #{patent.id}
-              </p>
+              <p className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{ color: accent }}>UK Design Certificate · #{patent.id}</p>
               <p className="text-sm font-bold leading-tight" style={{ color: TEXT }}>{patent.title}</p>
             </div>
           </div>
@@ -363,18 +330,13 @@ function PatentModal({ patent, dark, onClose }) {
             </motion.button>
           </div>
         </div>
-
         <div className="flex-1 overflow-hidden p-5" style={{ minHeight: "500px" }}>
-          <iframe
-            src={patent.certificateUrl}
-            className="w-full rounded-2xl"
+          <iframe src={patent.certificateUrl} className="w-full rounded-2xl"
             style={{ height: "100%", minHeight: "560px", border: `1px solid ${accent}30`, background: "#fff" }}
-            title="UK Design Certificate — AI Based Water Quality Checking Device"
-          />
+            title="UK Design Certificate" />
         </div>
-
         <div className="px-6 py-3 flex-shrink-0 flex items-center justify-between" style={{ borderTop: `0.5px solid ${BORDER}` }}>
-          <p className="text-xs" style={{ color: MUTED }}>Scroll inside viewer to see all pages · Press Esc to close</p>
+          <p className="text-xs" style={{ color: MUTED }}>Scroll inside viewer · Press Esc to close</p>
           <div className="flex items-center gap-1.5 text-xs font-bold" style={{ color: accent }}>
             <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: accent }} />
             {patent.authority}
@@ -388,113 +350,45 @@ function PatentModal({ patent, dark, onClose }) {
 // ═══════════════════════════════════════════════════════════════
 // PHOTO LIGHTBOX
 // ═══════════════════════════════════════════════════════════════
-function PhotoLightbox({ dark, onClose, accent, BG }) {
+function PhotoLightbox({ dark, onClose, accent }) {
   useEffect(() => {
     const handleKey = (e) => { if (e.key === "Escape") onClose(); };
     document.addEventListener("keydown", handleKey);
     document.body.style.overflow = "hidden";
-    return () => {
-      document.removeEventListener("keydown", handleKey);
-      document.body.style.overflow = "";
-    };
+    return () => { document.removeEventListener("keydown", handleKey); document.body.style.overflow = ""; };
   }, [onClose]);
 
   return (
-    <motion.div
-      initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-      onClick={onClose}
+    <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}
       className="fixed inset-0 z-[600] flex items-center justify-center p-6"
-      style={{ background: "rgba(0,0,0,0.88)", backdropFilter: "blur(20px)", cursor: "pointer" }}
-    >
-      <motion.div
-        initial={{ opacity: 0, scale: 0.6 }}
-        animate={{ opacity: 1, scale: 1 }}
-        exit={{ opacity: 0, scale: 0.6 }}
+      style={{ background: "rgba(0,0,0,0.88)", backdropFilter: "blur(20px)", cursor: "pointer" }}>
+      <motion.div initial={{ opacity: 0, scale: 0.6 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.6 }}
         transition={{ type: "spring", stiffness: 220, damping: 26 }}
-        className="relative"
-        onClick={(e) => e.stopPropagation()}
-        style={{ cursor: "default" }}
-      >
-        <motion.div
-          animate={{ rotate: 360 }}
-          transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
+        className="relative" onClick={(e) => e.stopPropagation()} style={{ cursor: "default" }}>
+        <motion.div animate={{ rotate: 360 }} transition={{ duration: 12, repeat: Infinity, ease: "linear" }}
           className="absolute -inset-2 rounded-3xl"
-          style={{
-            background: `conic-gradient(${accent}, #8b5cf6, #ec4899, ${accent})`,
-            borderRadius: "28px",
-            padding: "3px",
-            zIndex: 0,
-          }}
-        >
+          style={{ background: `conic-gradient(${accent}, #8b5cf6, #ec4899, ${accent})`, borderRadius: "28px", padding: "3px", zIndex: 0 }}>
           <div style={{ width: "100%", height: "100%", borderRadius: "24px", background: "#000" }} />
         </motion.div>
-
-        <motion.img
-          src="/vinay.jpeg"
-          alt="Vinay Raj V"
-          initial={{ opacity: 0, scale: 0.85 }}
-          animate={{ opacity: 1, scale: 1 }}
-          exit={{ opacity: 0, scale: 0.85 }}
+        <motion.img src="/vinay.jpeg" alt="Vinay Raj V"
+          initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.85 }}
           transition={{ type: "spring", stiffness: 260, damping: 24, delay: 0.05 }}
-          style={{
-            position: "relative",
-            zIndex: 1,
-            maxWidth: "88vw",
-            maxHeight: "80vh",
-            width: "auto",
-            height: "auto",
-            minWidth: "260px",
-            borderRadius: "24px",
-            objectFit: "contain",
-            display: "block",
-            boxShadow: `0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px ${accent}30`,
-          }}
-        />
-
-        <motion.div
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2 }}
+          style={{ position: "relative", zIndex: 1, maxWidth: "88vw", maxHeight: "80vh", width: "auto", height: "auto",
+            minWidth: "260px", borderRadius: "24px", objectFit: "contain", display: "block",
+            boxShadow: `0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px ${accent}30` }} />
+        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           className="absolute bottom-4 left-1/2 flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-bold text-white"
-          style={{
-            transform: "translateX(-50%)",
-            zIndex: 2,
-            background: "rgba(0,0,0,0.65)",
-            backdropFilter: "blur(12px)",
-            border: `0.5px solid ${accent}40`,
-            whiteSpace: "nowrap",
-          }}
-        >
+          style={{ transform: "translateX(-50%)", zIndex: 2, background: "rgba(0,0,0,0.65)", backdropFilter: "blur(12px)", border: `0.5px solid ${accent}40`, whiteSpace: "nowrap" }}>
           <div className="w-2 h-2 rounded-full animate-pulse" style={{ background: "#22c55e" }} />
           Vinay Raj V
         </motion.div>
       </motion.div>
-
-      <motion.button
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.15 }}
-        whileHover={{ scale: 1.12, rotate: 90 }}
-        whileTap={{ scale: 0.9 }}
-        onClick={onClose}
-        className="absolute top-5 right-5 w-11 h-11 rounded-2xl flex items-center justify-center"
-        style={{
-          background: "rgba(255,255,255,0.1)",
-          border: "0.5px solid rgba(255,255,255,0.2)",
-          color: "#fff",
-          backdropFilter: "blur(8px)",
-        }}
-      >
+      <motion.button initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }}
+        transition={{ delay: 0.15 }} whileHover={{ scale: 1.12, rotate: 90 }} whileTap={{ scale: 0.9 }}
+        onClick={onClose} className="absolute top-5 right-5 w-11 h-11 rounded-2xl flex items-center justify-center"
+        style={{ background: "rgba(255,255,255,0.1)", border: "0.5px solid rgba(255,255,255,0.2)", color: "#fff", backdropFilter: "blur(8px)" }}>
         <X className="w-5 h-5" />
       </motion.button>
-
-      <motion.p
-        initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.3 }}
-        className="absolute bottom-5 left-1/2 text-xs"
-        style={{ transform: "translateX(-50%)", color: "rgba(255,255,255,0.35)", whiteSpace: "nowrap" }}
-      >
-        Click anywhere or press Esc to close
-      </motion.p>
     </motion.div>
   );
 }
@@ -517,8 +411,7 @@ function NeuralCanvas({ dark }) {
     nodesRef.current = Array.from({ length: NODE_COUNT }, () => ({
       x: Math.random() * W, y: Math.random() * H,
       vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
-      r: Math.random() * 2 + 1,
-      pulse: Math.random() * Math.PI * 2,
+      r: Math.random() * 2 + 1, pulse: Math.random() * Math.PI * 2,
     }));
     const resize = () => { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; };
     window.addEventListener("resize", resize);
@@ -532,7 +425,8 @@ function NeuralCanvas({ dark }) {
         if (n.x < 0 || n.x > W) n.vx *= -1;
         if (n.y < 0 || n.y > H) n.vy *= -1;
         n.pulse += 0.02;
-        const alpha = 0.3 + Math.sin(n.pulse) * 0.15;
+        const baseAlpha = dark ? 0.3 : 0.15;
+        const alpha = baseAlpha + Math.sin(n.pulse) * 0.08;
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r, 0, Math.PI * 2);
         ctx.fillStyle = nodeColor + alpha + ")";
@@ -547,7 +441,8 @@ function NeuralCanvas({ dark }) {
             ctx.beginPath();
             ctx.moveTo(nodes[i].x, nodes[i].y);
             ctx.lineTo(nodes[j].x, nodes[j].y);
-            ctx.strokeStyle = lineColor + (0.12 * (1 - dist / 130)) + ")";
+            const lineAlpha = dark ? 0.12 : 0.06;
+            ctx.strokeStyle = lineColor + (lineAlpha * (1 - dist / 130)) + ")";
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
@@ -605,34 +500,18 @@ function CustomCursor({ dark }) {
 function useTyping(words, speed = 80, pause = 2200) {
   const [text, setText] = useState("");
   const state = useRef({ wi: 0, ci: 0, del: false });
-
   useEffect(() => {
     const tick = () => {
       const { wi, ci, del } = state.current;
       const word = words[wi];
-      if (!del && ci < word.length) {
-        setText(word.slice(0, ci + 1));
-        state.current.ci++;
-      } else if (!del && ci === word.length) {
-        state.current.del = true;
-        setTimeout(tick, pause);
-        return;
-      } else if (del && ci > 0) {
-        setText(word.slice(0, ci - 1));
-        state.current.ci--;
-      } else {
-        state.current.del = false;
-        state.current.wi = (wi + 1) % words.length;
-        setText("");
-        state.current.ci = 0;
-        setTimeout(tick, speed);
-        return;
-      }
+      if (!del && ci < word.length) { setText(word.slice(0, ci + 1)); state.current.ci++; }
+      else if (!del && ci === word.length) { state.current.del = true; setTimeout(tick, pause); return; }
+      else if (del && ci > 0) { setText(word.slice(0, ci - 1)); state.current.ci--; }
+      else { state.current.del = false; state.current.wi = (wi + 1) % words.length; setText(""); state.current.ci = 0; setTimeout(tick, speed); return; }
     };
     const id = setTimeout(tick, state.current.del ? 60 : speed);
     return () => clearTimeout(id);
   }, [text, words, speed, pause]);
-
   return text;
 }
 
@@ -664,20 +543,19 @@ function Counter({ target, suffix = "" }) {
 // SKILL CATEGORIES GRID
 // ═══════════════════════════════════════════════════════════════
 function SkillCategoriesGrid({ dark }) {
-  const CARD_BG = dark ? "rgba(255,255,255,0.03)" : "rgba(255,255,255,0.9)";
-  const CARD_BORDER = dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.07)";
+  const CARD_BG     = dark ? "rgba(255,255,255,0.03)" : "#ffffff";
+  const CARD_BORDER = dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)";
+  const CARD_SHADOW = dark ? "none" : "0 2px 16px rgba(0,0,0,0.06)";
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
       {skillCategories.map((cat, i) => {
         const theme = dark ? cat.dark : cat.light;
         return (
-          <motion.div
-            key={cat.title}
+          <motion.div key={cat.title}
             initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
             transition={{ delay: i * 0.08 }} whileHover={{ y: -6, scale: 1.02 }}
             className="rounded-2xl p-6 relative overflow-hidden group"
-            style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, backdropFilter: "blur(8px)" }}
-          >
+            style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, backdropFilter: "blur(8px)", boxShadow: CARD_SHADOW }}>
             <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-2xl opacity-70 group-hover:opacity-100 transition-opacity"
               style={{ background: `linear-gradient(90deg, ${cat.accent}, ${cat.accent}40, transparent)` }} />
             <div className="absolute -bottom-5 -right-5 w-16 h-16 rounded-full opacity-10 group-hover:opacity-20 transition-opacity"
@@ -708,24 +586,14 @@ function ContactForm({ dark, CARD_BG, CARD_BORDER, TEXT, MUTED, ACCENT }) {
 
   const inputStyle = {
     width: "100%",
-    background: dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)",
-    border: `0.5px solid ${CARD_BORDER}`,
-    borderRadius: "14px",
-    padding: "12px 16px",
-    fontSize: "0.875rem",
-    color: TEXT,
-    outline: "none",
-    transition: "border-color 0.2s",
-    fontFamily: "'DM Sans','Nunito',sans-serif",
+    background: dark ? "rgba(255,255,255,0.05)" : "#f8fafc",
+    border: `1px solid ${dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.12)"}`,
+    borderRadius: "14px", padding: "12px 16px", fontSize: "0.875rem", color: TEXT,
+    outline: "none", transition: "border-color 0.2s", fontFamily: "'DM Sans','Nunito',sans-serif",
   };
   const labelStyle = {
-    display: "block",
-    fontSize: "0.75rem",
-    fontWeight: 700,
-    marginBottom: "6px",
-    color: MUTED,
-    letterSpacing: "0.05em",
-    textTransform: "uppercase",
+    display: "block", fontSize: "0.75rem", fontWeight: 700, marginBottom: "6px",
+    color: MUTED, letterSpacing: "0.05em", textTransform: "uppercase",
   };
 
   const handleSubmit = async () => {
@@ -743,38 +611,36 @@ function ContactForm({ dark, CARD_BG, CARD_BORDER, TEXT, MUTED, ACCENT }) {
   };
 
   return (
-    <div className="rounded-3xl p-8 space-y-5" style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}` }}>
+    <div className="rounded-3xl p-8 space-y-5"
+      style={{ background: CARD_BG, border: `1px solid ${dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)"}`, boxShadow: dark ? "none" : "0 4px 24px rgba(0,0,0,0.07)" }}>
       <div>
         <label style={labelStyle}>Name</label>
         <input type="text" placeholder="Your name" value={form.name}
           onChange={e => setForm(f => ({ ...f, name: e.target.value }))} style={inputStyle}
-          onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = CARD_BORDER)} />
+          onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.12)")} />
       </div>
       <div>
         <label style={labelStyle}>Email</label>
         <input type="email" placeholder="your@email.com" value={form.email}
           onChange={e => setForm(f => ({ ...f, email: e.target.value }))} style={inputStyle}
-          onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = CARD_BORDER)} />
+          onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.12)")} />
       </div>
       <div>
         <label style={labelStyle}>Message</label>
         <textarea rows={5} placeholder="Tell me about your project or opportunity..." value={form.message}
           onChange={e => setForm(f => ({ ...f, message: e.target.value }))}
           style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }}
-          onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = CARD_BORDER)} />
+          onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.12)")} />
       </div>
-      <motion.button
-        whileHover={{ scale: status === "sending" ? 1 : 1.02, y: status === "sending" ? 0 : -2 }}
+      <motion.button whileHover={{ scale: status === "sending" ? 1 : 1.02, y: status === "sending" ? 0 : -2 }}
         whileTap={{ scale: 0.97 }} onClick={handleSubmit}
         disabled={status === "sending" || status === "sent"}
         className="w-full py-3.5 rounded-2xl text-sm font-bold text-white flex items-center justify-center gap-2 transition-all"
         style={{
           background: status === "sent" ? "linear-gradient(135deg,#10b981,#059669)" : "linear-gradient(135deg, #10b981, #06b6d4)",
-          boxShadow: "0 8px 30px rgba(16,185,129,0.25)",
-          opacity: status === "sending" ? 0.7 : 1,
+          boxShadow: "0 8px 30px rgba(16,185,129,0.25)", opacity: status === "sending" ? 0.7 : 1,
           cursor: status === "sending" || status === "sent" ? "default" : "pointer",
-        }}
-      >
+        }}>
         {status === "sending" && (
           <motion.div className="w-4 h-4 border-2 border-white border-t-transparent rounded-full"
             animate={{ rotate: 360 }} transition={{ duration: 0.7, repeat: Infinity, ease: "linear" }} />
@@ -803,7 +669,6 @@ function ChatBot({ dark, onClose }) {
   const [input, setInput] = useState("");
   const [loading, setLoading] = useState(false);
   const bottomRef = useRef(null);
-
   useEffect(() => { bottomRef.current?.scrollIntoView({ behavior: "smooth" }); }, [msgs]);
 
   const send = async () => {
@@ -812,44 +677,33 @@ function ChatBot({ dark, onClose }) {
     setInput("");
     setMsgs(m => [...m, { role: "user", text: userMsg }]);
     setLoading(true);
-    const history = msgs
-      .filter((m, idx) => !(m.role === "assistant" && idx === 0))
-      .map(m => ({ role: m.role, content: m.text }));
+    const history = msgs.filter((m, idx) => !(m.role === "assistant" && idx === 0)).map(m => ({ role: m.role, content: m.text }));
     history.push({ role: "user", content: userMsg });
     try {
-      const res = await fetch("/api/chat", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ messages: history }),
-      });
+      const res = await fetch("/api/chat", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ messages: history }) });
       if (!res.ok) throw new Error(`Server error ${res.status}`);
       const data = await res.json();
       setMsgs(m => [...m, { role: "assistant", text: data.reply }]);
     } catch (err) {
       setMsgs(m => [...m, { role: "assistant", text: "Oops! Something went wrong. Please try again." }]);
-    } finally {
-      setLoading(false);
-    }
+    } finally { setLoading(false); }
   };
 
-  const bg = dark ? "#0f172a" : "#ffffff";
-  const border = dark ? "rgba(34,211,238,0.2)" : "rgba(99,102,241,0.2)";
-  const accent = dark ? "#22d3ee" : "#6366f1";
-  const userBg = dark ? "rgba(34,211,238,0.15)" : "rgba(99,102,241,0.12)";
-  const aiBg = dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)";
-  const textColor = dark ? "#e2e8f0" : "#1e293b";
+  const bg         = dark ? "#0f172a" : "#ffffff";
+  const border     = dark ? "rgba(34,211,238,0.2)" : "rgba(99,102,241,0.2)";
+  const accent     = dark ? "#22d3ee" : "#6366f1";
+  const userBg     = dark ? "rgba(34,211,238,0.15)" : "rgba(99,102,241,0.1)";
+  const aiBg       = dark ? "rgba(255,255,255,0.05)" : "#f8fafc";
+  const textColor  = dark ? "#e2e8f0" : "#1e293b";
   const mutedColor = dark ? "#64748b" : "#94a3b8";
-  const inputBg = dark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.04)";
+  const inputBg    = dark ? "rgba(255,255,255,0.05)" : "#f1f5f9";
 
   return (
-    <motion.div
-      initial={{ opacity: 0, y: 30, scale: 0.9 }}
-      animate={{ opacity: 1, y: 0, scale: 1 }}
+    <motion.div initial={{ opacity: 0, y: 30, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 30, scale: 0.9 }}
-      style={{ background: bg, border: `1px solid ${border}`, boxShadow: `0 25px 60px rgba(0,0,0,0.4)` }}
-      className="fixed bottom-28 right-6 w-80 rounded-3xl z-[200] overflow-hidden flex flex-col"
-    >
-      <div style={{ borderBottom: `1px solid ${border}`, background: `linear-gradient(135deg, ${accent}22, transparent)` }}
+      style={{ background: bg, border: `1px solid ${border}`, boxShadow: `0 25px 60px rgba(0,0,0,0.2)` }}
+      className="fixed bottom-28 right-6 w-80 rounded-3xl z-[200] overflow-hidden flex flex-col">
+      <div style={{ borderBottom: `1px solid ${border}`, background: `linear-gradient(135deg, ${accent}15, transparent)` }}
         className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-base" style={{ background: accent + "30" }}>🤖</div>
@@ -861,11 +715,8 @@ function ChatBot({ dark, onClose }) {
             </div>
           </div>
         </div>
-        <button onClick={onClose} className="p-1 rounded-lg transition-colors" style={{ color: mutedColor }}>
-          <X className="w-4 h-4" />
-        </button>
+        <button onClick={onClose} className="p-1 rounded-lg" style={{ color: mutedColor }}><X className="w-4 h-4" /></button>
       </div>
-
       <div className="flex-1 overflow-y-auto p-4 space-y-3 max-h-72">
         {msgs.map((m, i) => (
           <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
@@ -887,19 +738,15 @@ function ChatBot({ dark, onClose }) {
         )}
         <div ref={bottomRef} />
       </div>
-
       {msgs.length === 1 && (
         <div className="px-3 pb-2 flex flex-wrap gap-1.5">
           {["What are his skills?", "Tell me about his UK patent", "Is he open to internships?"].map(q => (
             <button key={q} onClick={() => setInput(q)}
               className="text-xs px-2.5 py-1 rounded-full font-medium transition-all hover:scale-105"
-              style={{ background: accent + "18", color: accent, border: `0.5px solid ${accent}40` }}>
-              {q}
-            </button>
+              style={{ background: accent + "18", color: accent, border: `0.5px solid ${accent}40` }}>{q}</button>
           ))}
         </div>
       )}
-
       <div style={{ borderTop: `1px solid ${border}` }} className="p-3 flex gap-2">
         <input value={input} onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === "Enter" && !e.shiftKey && send()}
@@ -908,7 +755,7 @@ function ChatBot({ dark, onClose }) {
           style={{ background: inputBg, color: textColor, border: `0.5px solid ${border}` }} />
         <motion.button whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.94 }} onClick={send}
           disabled={loading || !input.trim()}
-          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 disabled:opacity-40 transition-opacity"
+          className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 disabled:opacity-40"
           style={{ background: accent }}>
           <Send className="w-4 h-4 text-white" />
         </motion.button>
@@ -924,7 +771,7 @@ function Section({ id, children, className = "" }) {
   return <section id={id} className={`relative z-10 ${className}`}>{children}</section>;
 }
 
-function SectionHead({ eyebrow, title, gradient }) {
+function SectionHead({ eyebrow, title, gradient, dark }) {
   return (
     <div className="text-center mb-20">
       <motion.p initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
@@ -933,8 +780,10 @@ function SectionHead({ eyebrow, title, gradient }) {
       </motion.p>
       <motion.h2 initial={{ opacity: 0, y: 16 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
         transition={{ delay: 0.1 }} className="text-4xl md:text-6xl font-black"
-        style={{ fontFamily: "'Bebas Neue', 'Oswald', sans-serif", background: `linear-gradient(135deg, ${gradient[0]}, ${gradient[1]})`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-        {title}
+        style={{ fontFamily: "'Bebas Neue', 'Oswald', sans-serif" }}>
+        <GradientText dark={dark} from={gradient[0]} to={gradient[1]} solidColor={gradient[0]}>
+          {title}
+        </GradientText>
       </motion.h2>
       <motion.div initial={{ scaleX: 0 }} whileInView={{ scaleX: 1 }} viewport={{ once: true }}
         transition={{ delay: 0.3, duration: 0.6 }}
@@ -951,15 +800,12 @@ export default function Portfolio() {
   const [dark, setDark] = useState(true);
   const [activeNav, setActiveNav] = useState("home");
   const [chatOpen, setChatOpen] = useState(false);
-  const [sound, setSound] = useState(false);
   const [filter, setFilter] = useState("All");
   const [showTop, setShowTop] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [selectedCert, setSelectedCert] = useState(null);
   const [selectedPatent, setSelectedPatent] = useState(null);
   const [photoOpen, setPhotoOpen] = useState(false);
-
-  // ── NEW: Show More state ──
   const [showAll, setShowAll] = useState(false);
   const INITIAL_COUNT = 4;
 
@@ -982,7 +828,6 @@ export default function Portfolio() {
     return () => obs.disconnect();
   }, []);
 
-  // ── Reset showAll when filter changes ──
   useEffect(() => { setShowAll(false); }, [filter]);
 
   const allTags = ["All", ...new Set(projects.flatMap(p => p.tags))];
@@ -990,13 +835,15 @@ export default function Portfolio() {
   const visibleProjects = showAll ? filteredProjects : filteredProjects.slice(0, INITIAL_COUNT);
   const hasMore = filteredProjects.length > INITIAL_COUNT;
 
-  const BG          = dark ? "#020617"                      : "#f8fafc";
-  const TEXT        = dark ? "#f1f5f9"                      : "#0f172a";
-  const MUTED       = dark ? "#64748b"                      : "#94a3b8";
-  const CARD_BG     = dark ? "rgba(255,255,255,0.03)"       : "rgba(0,0,0,0.03)";
-  const CARD_BORDER = dark ? "rgba(255,255,255,0.07)"       : "rgba(0,0,0,0.07)";
-  const ACCENT      = dark ? "#22d3ee"                      : "#6366f1";
-  const NAV_BG      = dark ? "rgba(2,6,23,0.85)"            : "rgba(248,250,252,0.85)";
+  const BG          = dark ? "#020617"                : "#fafafa";
+  const TEXT        = dark ? "#f1f5f9"                : "#111827";
+  const MUTED       = dark ? "#64748b"                : "#6b7280";
+  const CARD_BG     = dark ? "rgba(255,255,255,0.03)" : "#ffffff";
+  const CARD_BORDER = dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)";
+  const CARD_SHADOW = dark ? "none"                   : "0 2px 12px rgba(0,0,0,0.06)";
+  const ACCENT      = dark ? "#22d3ee"                : "#6366f1";
+  const NAV_BG      = dark ? "rgba(2,6,23,0.85)"      : "rgba(250,250,250,0.92)";
+  const NAV_BORDER  = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.08)";
 
   return (
     <div style={{ background: BG, color: TEXT, cursor: "none", fontFamily: "'DM Sans','Nunito',sans-serif", minHeight: "100vh", overflowX: "hidden" }}>
@@ -1008,7 +855,6 @@ export default function Portfolio() {
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-thumb { background: ${ACCENT}; border-radius: 2px; }
         ::selection { background: ${ACCENT}40; }
-        .glow { box-shadow: 0 0 30px ${ACCENT}30; }
       `}</style>
 
       <NeuralCanvas dark={dark} />
@@ -1021,7 +867,7 @@ export default function Portfolio() {
       {/* ── NAVBAR ── */}
       <motion.nav initial={{ y: -60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6 }}
         className="fixed top-0 left-0 right-0 z-50 backdrop-blur-2xl"
-        style={{ background: NAV_BG, borderBottom: `0.5px solid ${CARD_BORDER}` }}>
+        style={{ background: NAV_BG, borderBottom: `0.5px solid ${NAV_BORDER}` }}>
         <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
           <motion.a href="https://my-portfolio-nmj4.vercel.app/" target="_blank" rel="noopener noreferrer"
             whileHover={{ scale: 1.05 }} className="text-xl font-black tracking-tight"
@@ -1042,10 +888,6 @@ export default function Portfolio() {
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setSound(!sound)}
-              className="p-2 rounded-xl" style={{ color: MUTED, border: `0.5px solid ${CARD_BORDER}`, background: CARD_BG }}>
-              {sound ? <Volume2 className="w-4 h-4" /> : <VolumeX className="w-4 h-4" />}
-            </motion.button>
             <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setDark(!dark)}
               className="p-2 rounded-xl" style={{ color: MUTED, border: `0.5px solid ${CARD_BORDER}`, background: CARD_BG }}>
               {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
@@ -1068,7 +910,7 @@ export default function Portfolio() {
           {mobileMenuOpen && (
             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
               className="lg:hidden overflow-hidden px-6 pb-4 flex flex-wrap gap-2"
-              style={{ borderTop: `0.5px solid ${CARD_BORDER}` }}>
+              style={{ borderTop: `0.5px solid ${NAV_BORDER}` }}>
               {NAV.map(s => (
                 <a key={s} href={`#${s}`} onClick={() => setMobileMenuOpen(false)}
                   className="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider capitalize"
@@ -1088,14 +930,9 @@ export default function Portfolio() {
             style={{ background: `conic-gradient(${ACCENT}, #8b5cf6, #ec4899, ${ACCENT})`, padding: "3px" }}>
             <div className="w-full h-full rounded-full" style={{ background: BG }} />
           </motion.div>
-
-          <motion.div
-            onClick={() => setPhotoOpen(true)}
-            whileHover={{ scale: 1.06 }}
-            whileTap={{ scale: 0.97 }}
+          <motion.div onClick={() => setPhotoOpen(true)} whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.97 }}
             title="Click to view full photo"
-            style={{ position: "relative", zIndex: 1, width: "112px", height: "112px", borderRadius: "50%", overflow: "hidden", cursor: "pointer" }}
-          >
+            style={{ position: "relative", zIndex: 1, width: "112px", height: "112px", borderRadius: "50%", overflow: "hidden", cursor: "pointer" }}>
             <img src="/vinay.jpeg" alt="Vinay"
               style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
             <motion.div initial={{ opacity: 0 }} whileHover={{ opacity: 1 }}
@@ -1103,7 +940,6 @@ export default function Portfolio() {
               <ZoomIn style={{ color: "#fff", width: "22px", height: "22px" }} />
             </motion.div>
           </motion.div>
-
           <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 animate-pulse"
             style={{ background: "#22c55e", borderColor: BG, zIndex: 2 }} />
         </motion.div>
@@ -1117,7 +953,7 @@ export default function Portfolio() {
           className="text-6xl md:text-8xl lg:text-9xl font-black mb-3 leading-none"
           style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: "0.02em" }}>
           <span style={{ color: TEXT }}>VINAY </span>
-          <span style={{ background: `linear-gradient(135deg, ${ACCENT}, #8b5cf6, #ec4899)`, WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>RAJ V</span>
+          <GradientText dark={dark} from={ACCENT} to="#ec4899" solidColor={ACCENT}>RAJ V</GradientText>
         </motion.h1>
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
@@ -1132,7 +968,6 @@ export default function Portfolio() {
           6th Semester AIML student crafting intelligent systems that bridge<br />cutting-edge research with real-world impact.
         </motion.p>
 
-        {/* UK Patent badge on hero */}
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.05 }}
           onClick={() => setSelectedPatent(patents[0])}
           className="flex items-center gap-2 mb-8 px-4 py-2 rounded-full cursor-pointer"
@@ -1152,27 +987,25 @@ export default function Portfolio() {
           </motion.a>
           <motion.a href="#contact" whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.97 }}
             className="px-8 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-2"
-            style={{ background: CARD_BG, border: `1px solid ${CARD_BORDER}`, color: TEXT }}>
+            style={{ background: CARD_BG, border: `1px solid ${CARD_BORDER}`, color: TEXT, boxShadow: CARD_SHADOW }}>
             <Mail className="w-4 h-4" /> Say Hello
           </motion.a>
           <motion.button whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.97 }}
             onClick={() => setChatOpen(true)}
             className="px-8 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-2"
-            style={{ background: "#8b5cf620", border: `1px solid #8b5cf640`, color: "#a78bfa" }}>
+            style={{ background: "#8b5cf620", border: `1px solid #8b5cf640`, color: dark ? "#a78bfa" : "#7c3aed" }}>
             <MessageCircle className="w-4 h-4" /> Ask AI About Me
           </motion.button>
         </motion.div>
 
         <motion.a href="#about" animate={{ y: [0, 8, 0] }} transition={{ duration: 1.8, repeat: Infinity }}
-          style={{ color: MUTED }}>
-          <ChevronDown className="w-5 h-5" />
-        </motion.a>
+          style={{ color: MUTED }}><ChevronDown className="w-5 h-5" /></motion.a>
       </Section>
 
       {/* ── ABOUT ── */}
       <Section id="about" className="py-28 px-6">
         <div className="max-w-6xl mx-auto">
-          <SectionHead eyebrow="Who I Am" title="About Me" gradient={[ACCENT, "#8b5cf6"]} />
+          <SectionHead dark={dark} eyebrow="Who I Am" title="About Me" gradient={[ACCENT, "#8b5cf6"]} />
           <div className="grid md:grid-cols-2 gap-16 items-center">
             <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               transition={{ duration: 0.7 }} className="space-y-5 leading-relaxed" style={{ color: MUTED, fontSize: "1.05rem" }}>
@@ -1187,14 +1020,15 @@ export default function Portfolio() {
             </motion.div>
             <div className="grid grid-cols-2 gap-4">
               {[
-                { val: 4,   suffix: "+", label: "Projects Built",  icon: "🚀" },
-                { val: 8,   suffix: "+", label: "Technologies",    icon: "⚙️" },
-                { val: 500, suffix: "+", label: "GitHub Commits",  icon: "💻" },
-                { val: 7,   suffix: "+", label: "Certifications",  icon: "🏆" },
+                { val: 5,  suffix: "+", label: "Projects Built", icon: "🚀" },
+                { val: 8,  suffix: "+", label: "Technologies",   icon: "⚙️" },
+                { val: 50, suffix: "+", label: "GitHub Commits", icon: "💻" },
+                { val: 7,  suffix: "+", label: "Certifications", icon: "🏆" },
               ].map((s, i) => (
                 <motion.div key={s.label} initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }}
                   viewport={{ once: true }} transition={{ delay: i * 0.1 }} whileHover={{ y: -5 }}
-                  className="rounded-2xl p-6 text-center" style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}` }}>
+                  className="rounded-2xl p-6 text-center"
+                  style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, boxShadow: CARD_SHADOW }}>
                   <div className="text-3xl mb-2">{s.icon}</div>
                   <div className="text-3xl font-black mb-1" style={{ fontFamily: "'Bebas Neue',sans-serif", color: ACCENT }}>
                     <Counter target={s.val} suffix={s.suffix} />
@@ -1210,9 +1044,7 @@ export default function Portfolio() {
       {/* ── PROJECTS ── */}
       <Section id="projects" className="py-28 px-6">
         <div className="max-w-6xl mx-auto">
-          <SectionHead eyebrow="What I've Built" title="Featured Projects" gradient={["#8b5cf6", "#ec4899"]} />
-
-          {/* Filter Tags */}
+          <SectionHead dark={dark} eyebrow="What I've Built" title="Featured Projects" gradient={["#8b5cf6", "#ec4899"]} />
           <div className="flex flex-wrap justify-center gap-2 mb-12">
             {allTags.map(tag => (
               <motion.button key={tag} onClick={() => setFilter(tag)} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
@@ -1221,20 +1053,19 @@ export default function Portfolio() {
                   background: filter === tag ? "linear-gradient(135deg, #8b5cf6, #ec4899)" : CARD_BG,
                   color: filter === tag ? "#fff" : MUTED,
                   border: `0.5px solid ${filter === tag ? "transparent" : CARD_BORDER}`,
+                  boxShadow: filter === tag ? "none" : CARD_SHADOW,
                 }}>
                 {tag === "All" && <Filter className="w-3 h-3" />} {tag}
               </motion.button>
             ))}
           </div>
-
-          {/* Projects Grid */}
           <div className="grid md:grid-cols-2 gap-8">
             <AnimatePresence mode="popLayout">
               {visibleProjects.map((p, idx) => (
                 <motion.div key={p.id} layout initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, scale: 0.9 }} transition={{ delay: idx * 0.08 }} whileHover={{ y: -8 }}
                   className="rounded-3xl p-8 group relative overflow-hidden"
-                  style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}` }}>
+                  style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, boxShadow: CARD_SHADOW }}>
                   <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl"
                     style={{ background: `linear-gradient(90deg, ${p.gradient[0]}, ${p.gradient[1]})` }} />
                   <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl"
@@ -1246,68 +1077,40 @@ export default function Portfolio() {
                         <Code2 className="w-6 h-6 text-white" />
                       </div>
                       <span className="px-2 py-0.5 rounded-full text-xs"
-                        style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, color: MUTED }}>
-                        {p.year}
-                      </span>
+                        style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, color: MUTED }}>{p.year}</span>
                     </div>
-                    <h3 className="text-lg font-bold mb-2 transition-colors" style={{ color: TEXT }}>{p.title}</h3>
+                    <h3 className="text-lg font-bold mb-2" style={{ color: TEXT }}>{p.title}</h3>
                     <p className="text-sm leading-relaxed mb-5" style={{ color: MUTED }}>{p.desc}</p>
                     <div className="flex flex-wrap gap-1.5 mb-6">
                       {p.tags.map(t => (
                         <span key={t} className="px-2.5 py-1 rounded-full text-xs font-bold"
-                          style={{ background: p.gradient[0] + "20", color: p.gradient[0], border: `0.5px solid ${p.gradient[0]}40` }}>{t}</span>
+                          style={{ background: p.gradient[0] + "18", color: p.gradient[0], border: `0.5px solid ${p.gradient[0]}40` }}>{t}</span>
                       ))}
                     </div>
-                    <div className="flex gap-2">
-                      <motion.a href={p.github} target="_blank" rel="noopener noreferrer"
-                        whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
-                        className="flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold text-white"
-                        style={{ background: `linear-gradient(135deg, ${p.gradient[0]}, ${p.gradient[1]})` }}>
-                        <Github className="w-4 h-4" /> View on GitHub
-                      </motion.a>
-                    </div>
+                    <motion.a href={p.github} target="_blank" rel="noopener noreferrer"
+                      whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
+                      className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold text-white"
+                      style={{ background: `linear-gradient(135deg, ${p.gradient[0]}, ${p.gradient[1]})` }}>
+                      <Github className="w-4 h-4" /> View on GitHub
+                    </motion.a>
                   </div>
                 </motion.div>
               ))}
             </AnimatePresence>
           </div>
-
-          {/* ── SHOW MORE / SHOW LESS BUTTON ── */}
           {hasMore && (
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.3 }}
-              className="flex justify-center mt-12"
-            >
-              <motion.button
-                whileHover={{ scale: 1.05, y: -2 }}
-                whileTap={{ scale: 0.97 }}
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
+              className="flex justify-center mt-12">
+              <motion.button whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.97 }}
                 onClick={() => setShowAll(v => !v)}
                 className="flex items-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-bold transition-all"
-                style={{
-                  background: CARD_BG,
-                  border: `1px solid ${CARD_BORDER}`,
-                  color: TEXT,
-                  boxShadow: `0 4px 20px rgba(0,0,0,0.1)`,
-                }}
-              >
+                style={{ background: CARD_BG, border: `1px solid ${CARD_BORDER}`, color: TEXT, boxShadow: CARD_SHADOW }}>
                 {showAll ? (
-                  <>
-                    <motion.span
-                      animate={{ rotate: 180 }}
-                      transition={{ duration: 0.3 }}
-                      style={{ display: "inline-flex" }}
-                    >
-                      <ChevronDown className="w-4 h-4" style={{ color: ACCENT }} />
-                    </motion.span>
-                    Show Less
-                  </>
-                ) : (
-                  <>
+                  <><motion.span animate={{ rotate: 180 }} transition={{ duration: 0.3 }} style={{ display: "inline-flex" }}>
                     <ChevronDown className="w-4 h-4" style={{ color: ACCENT }} />
-                    Show More ({filteredProjects.length - INITIAL_COUNT} more)
-                  </>
+                  </motion.span> Show Less</>
+                ) : (
+                  <><ChevronDown className="w-4 h-4" style={{ color: ACCENT }} /> Show More ({filteredProjects.length - INITIAL_COUNT} more)</>
                 )}
               </motion.button>
             </motion.div>
@@ -1315,15 +1118,15 @@ export default function Portfolio() {
         </div>
       </Section>
 
-      {/* ── PATENTS & IP ── */}
+      {/* ── PATENTS ── */}
       <Section id="patents" className="py-28 px-6">
         <div className="max-w-6xl mx-auto">
-          <SectionHead eyebrow="Intellectual Property" title="REGISTERED DESIGN" gradient={["#0EA5E9", "#6366f1"]} />
+          <SectionHead dark={dark} eyebrow="Intellectual Property" title="Registered Design" gradient={["#0EA5E9", "#6366f1"]} />
           {patents.map((patent, i) => (
             <motion.div key={patent.id} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
               <div className="rounded-3xl overflow-hidden relative"
-                style={{ background: CARD_BG, border: "1px solid rgba(14,165,233,0.25)", boxShadow: "0 0 60px rgba(14,165,233,0.05)" }}>
+                style={{ background: CARD_BG, border: "1px solid rgba(14,165,233,0.25)", boxShadow: dark ? "0 0 60px rgba(14,165,233,0.05)" : "0 4px 32px rgba(14,165,233,0.08)" }}>
                 <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg,#0EA5E9,#6366f1,#8b5cf6)" }} />
                 <div className="p-8 md:p-12">
                   <div className="flex flex-col md:flex-row gap-8 items-start">
@@ -1340,7 +1143,7 @@ export default function Portfolio() {
                               🛡️ UK Registered Design
                             </span>
                             <span className="px-3 py-1 rounded-full text-xs font-bold"
-                              style={{ background: "rgba(34,197,94,0.15)", color: "#22c55e", border: "1px solid rgba(34,197,94,0.3)" }}>
+                              style={{ background: "rgba(34,197,94,0.15)", color: "#16a34a", border: "1px solid rgba(34,197,94,0.3)" }}>
                               ✓ Granted
                             </span>
                           </div>
@@ -1349,9 +1152,7 @@ export default function Portfolio() {
                           <p className="text-sm mt-1" style={{ color: MUTED }}>{patent.authority}</p>
                         </div>
                       </div>
-
                       <p className="text-sm leading-relaxed" style={{ color: MUTED }}>{patent.description}</p>
-
                       <div className="grid grid-cols-2 gap-3">
                         {[
                           { label: "Design Number", value: `#${patent.id}` },
@@ -1360,13 +1161,12 @@ export default function Portfolio() {
                           { label: "Classification", value: "Class 10 · Subclass 05" },
                         ].map(({ label, value }) => (
                           <div key={label} className="rounded-xl p-3"
-                            style={{ background: dark ? "rgba(255,255,255,0.03)" : "rgba(0,0,0,0.04)", border: `0.5px solid ${CARD_BORDER}` }}>
+                            style={{ background: dark ? "rgba(255,255,255,0.03)" : "#f8fafc", border: `0.5px solid ${CARD_BORDER}` }}>
                             <p className="text-xs font-bold uppercase tracking-wider mb-1" style={{ color: MUTED }}>{label}</p>
                             <p className="text-sm font-bold" style={{ color: TEXT }}>{value}</p>
                           </div>
                         ))}
                       </div>
-
                       <div>
                         <p className="text-xs font-bold uppercase tracking-wider mb-3" style={{ color: MUTED }}>Registered Inventors</p>
                         <div className="flex flex-wrap gap-2">
@@ -1383,20 +1183,15 @@ export default function Portfolio() {
                           ))}
                         </div>
                       </div>
-
-                      <div className="flex flex-wrap gap-3 items-center">
-                        <motion.button whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}
-                          onClick={() => setSelectedPatent(patent)}
-                          className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white"
-                          style={{ background: "linear-gradient(135deg,#0EA5E9,#6366f1)", boxShadow: "0 8px 24px rgba(14,165,233,0.3)" }}>
-                          <Eye className="w-4 h-4" /> View Certificate
-                        </motion.button>
-                      </div>
+                      <motion.button whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}
+                        onClick={() => setSelectedPatent(patent)}
+                        className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white"
+                        style={{ background: "linear-gradient(135deg,#0EA5E9,#6366f1)", boxShadow: "0 8px 24px rgba(14,165,233,0.3)" }}>
+                        <Eye className="w-4 h-4" /> View Certificate
+                      </motion.button>
                     </div>
-
                     <div className="flex-shrink-0 flex flex-col items-center justify-center gap-4 md:w-64">
-                      <motion.div
-                        animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.03, 1] }}
+                      <motion.div animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.03, 1] }}
                         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
                         className="w-40 h-40 rounded-3xl flex items-center justify-center relative"
                         style={{ background: "linear-gradient(135deg,rgba(14,165,233,0.15),rgba(99,102,241,0.1))", border: "1px solid rgba(14,165,233,0.3)" }}>
@@ -1411,7 +1206,7 @@ export default function Portfolio() {
                       <div className="flex items-center gap-2 px-4 py-2 rounded-full"
                         style={{ background: "rgba(34,197,94,0.1)", border: "1px solid rgba(34,197,94,0.25)" }}>
                         <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                        <span className="text-xs font-bold" style={{ color: "#22c55e" }}>Officially Registered</span>
+                        <span className="text-xs font-bold" style={{ color: "#16a34a" }}>Officially Registered</span>
                       </div>
                     </div>
                   </div>
@@ -1425,7 +1220,7 @@ export default function Portfolio() {
       {/* ── SKILLS ── */}
       <Section id="skills" className="py-28 px-6">
         <div className="max-w-6xl mx-auto">
-          <SectionHead eyebrow="What I Work With" title="Tech Stack" gradient={["#ec4899", "#f97316"]} />
+          <SectionHead dark={dark} eyebrow="What I Work With" title="Tech Stack" gradient={["#ec4899", "#f97316"]} />
           <SkillCategoriesGrid dark={dark} />
         </div>
       </Section>
@@ -1433,18 +1228,18 @@ export default function Portfolio() {
       {/* ── EDUCATION ── */}
       <Section id="education" className="py-28 px-6">
         <div className="max-w-4xl mx-auto">
-          <SectionHead eyebrow="My Journey" title="Education" gradient={["#06b6d4", "#3b82f6"]} />
+          <SectionHead dark={dark} eyebrow="My Journey" title="Education" gradient={["#06b6d4", "#3b82f6"]} />
           <div className="relative pl-8 md:pl-12">
             <div className="absolute left-3 md:left-5 top-2 bottom-2 w-px"
               style={{ background: `linear-gradient(to bottom, ${ACCENT}80, transparent)` }} />
             {education.map((e, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
                 viewport={{ once: true }} transition={{ delay: i * 0.15 }} className="relative mb-10">
-                <div className="absolute -left-5 md:-left-7 top-4 w-4 h-4 rounded-full border-2 flex items-center justify-center text-xs"
+                <div className="absolute -left-5 md:-left-7 top-4 w-4 h-4 rounded-full border-2 flex items-center justify-center"
                   style={{ background: BG, borderColor: ACCENT }}>
                   <div className="w-2 h-2 rounded-full" style={{ background: ACCENT }} />
                 </div>
-                <div className="rounded-2xl p-6" style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}` }}>
+                <div className="rounded-2xl p-6" style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, boxShadow: CARD_SHADOW }}>
                   <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
                     <div className="flex items-center gap-2">
                       <span className="text-xl">{e.icon}</span>
@@ -1455,10 +1250,10 @@ export default function Portfolio() {
                       <Calendar className="w-3 h-3" /> {e.period}
                     </span>
                   </div>
-                  <p className="text-sm font-semibold mb-1" style={{ color: "#a78bfa" }}>{e.school}</p>
+                  <p className="text-sm font-semibold mb-1" style={{ color: dark ? "#a78bfa" : "#7c3aed" }}>{e.school}</p>
                   <div className="flex items-center gap-4 text-xs" style={{ color: MUTED }}>
                     <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {e.location}</span>
-                    <span className="font-bold" style={{ color: "#34d399" }}>{e.grade}</span>
+                    <span className="font-bold" style={{ color: "#16a34a" }}>{e.grade}</span>
                   </div>
                 </div>
               </motion.div>
@@ -1470,7 +1265,7 @@ export default function Portfolio() {
       {/* ── ACHIEVEMENTS ── */}
       <Section id="achievements" className="py-28 px-6">
         <div className="max-w-6xl mx-auto">
-          <SectionHead eyebrow="Recognition" title="Achievements" gradient={["#f59e0b", "#f97316"]} />
+          <SectionHead dark={dark} eyebrow="Recognition" title="Achievements" gradient={["#f59e0b", "#f97316"]} />
           <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
             className="text-center text-xs mb-10 flex items-center justify-center gap-1.5" style={{ color: MUTED }}>
             <Eye className="w-3.5 h-3.5" /> Click any card to view the certificate
@@ -1482,9 +1277,9 @@ export default function Portfolio() {
                 whileHover={{ y: -8, scale: 1.02 }} whileTap={{ scale: 0.97 }}
                 onClick={() => setSelectedCert(a)}
                 className="rounded-3xl p-6 text-center group relative overflow-hidden"
-                style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, cursor: "pointer" }}>
+                style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, cursor: "pointer", boxShadow: CARD_SHADOW }}>
                 <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"
-                  style={{ background: `radial-gradient(circle at 50% 0%, ${a.accent}18, transparent 70%)` }} />
+                  style={{ background: `radial-gradient(circle at 50% 0%, ${a.accent}15, transparent 70%)` }} />
                 <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
                   style={{ background: `linear-gradient(90deg, transparent, ${a.accent}, transparent)` }} />
                 <div className="relative z-10">
@@ -1496,15 +1291,8 @@ export default function Portfolio() {
                   <p className="text-xs mb-1" style={{ color: MUTED }}>{a.issuer}</p>
                   <p className="text-xs font-mono mb-3" style={{ color: a.accent }}>{a.date}</p>
                   <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0"
-                    style={{
-                      background: a.certificate ? a.accent + "20" : "rgba(100,116,139,0.15)",
-                      color: a.certificate ? a.accent : MUTED,
-                      border: `0.5px solid ${a.certificate ? a.accent + "40" : "rgba(100,116,139,0.3)"}`,
-                    }}>
-                    {a.certificate
-                      ? <><Eye className="w-3 h-3" /> View Certificate</>
-                      : <><Sparkles className="w-3 h-3" /> Coming Soon</>
-                    }
+                    style={{ background: a.certificate ? a.accent + "20" : "rgba(100,116,139,0.15)", color: a.certificate ? a.accent : MUTED, border: `0.5px solid ${a.certificate ? a.accent + "40" : "rgba(100,116,139,0.3)"}` }}>
+                    {a.certificate ? <><Eye className="w-3 h-3" /> View Certificate</> : <><Sparkles className="w-3 h-3" /> Coming Soon</>}
                   </div>
                 </div>
               </motion.div>
@@ -1516,16 +1304,13 @@ export default function Portfolio() {
       {/* ── CONTACT ── */}
       <Section id="contact" className="py-28 px-6">
         <div className="max-w-5xl mx-auto">
-          <SectionHead eyebrow="Get In Touch" title="Let's Connect" gradient={["#10b981", "#06b6d4"]} />
+          <SectionHead dark={dark} eyebrow="Get In Touch" title="Let's Connect" gradient={["#10b981", "#06b6d4"]} />
           <div className="grid md:grid-cols-2 gap-12 items-start">
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.6 }}>
-              <h3 className="text-3xl font-black mb-4 leading-tight"
-                style={{ fontFamily: "'Bebas Neue',sans-serif", color: TEXT }}>
+              <h3 className="text-3xl font-black mb-4 leading-tight" style={{ fontFamily: "'Bebas Neue',sans-serif", color: TEXT }}>
                 Open to<br />
-                <span style={{ background: "linear-gradient(135deg, #10b981, #06b6d4)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                  opportunities
-                </span>
+                <GradientText dark={dark} from="#10b981" to="#06b6d4" solidColor="#10b981">opportunities</GradientText>
               </h3>
               <p className="text-sm leading-relaxed mb-8" style={{ color: MUTED }}>
                 Looking for internships, ML freelance work, or collaborations.<br />
@@ -1533,19 +1318,18 @@ export default function Portfolio() {
               </p>
               <div className="space-y-3">
                 {[
-                  { icon: Github,       label: "GitHub",    sub: "github.com/vinayrajv2005",     href: "https://github.com/vinayrajv2005",                   color: "#6b7280" },
+                  { icon: Github,       label: "GitHub",    sub: "github.com/vinayrajv2005",     href: "https://github.com/vinayrajv2005",                   color: dark ? "#6b7280" : "#374151" },
                   { icon: Linkedin,     label: "LinkedIn",  sub: "vinay-raj-v",                  href: "https://www.linkedin.com/in/vinay-raj-v-b89963341/", color: "#0ea5e9" },
                   { icon: Mail,         label: "Email",     sub: "vinayrajv33@gmail.com",        href: "mailto:vinayrajv33@gmail.com",                        color: "#ef4444" },
                   { icon: ExternalLink, label: "Portfolio", sub: "my-portfolio-nmj4.vercel.app", href: "https://my-portfolio-nmj4.vercel.app/",               color: "#8b5cf6" },
                 ].map(({ icon: Icon, label, sub, href, color }, i) => (
                   <motion.a key={label} href={href}
-                    target={href.startsWith("mailto") ? "_self" : "_blank"}
-                    rel="noopener noreferrer"
+                    target={href.startsWith("mailto") ? "_self" : "_blank"} rel="noopener noreferrer"
                     initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }} transition={{ delay: i * 0.08 }}
                     whileHover={{ x: 6, scale: 1.01 }} whileTap={{ scale: 0.98 }}
                     className="flex items-center gap-4 p-4 rounded-2xl group transition-all"
-                    style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, textDecoration: "none" }}>
+                    style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, textDecoration: "none", boxShadow: CARD_SHADOW }}>
                     <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
                       style={{ background: color + "20", border: `0.5px solid ${color}40` }}>
                       <Icon className="w-5 h-5" style={{ color }} />
@@ -1554,8 +1338,7 @@ export default function Portfolio() {
                       <p className="text-sm font-bold" style={{ color: TEXT }}>{label}</p>
                       <p className="text-xs truncate" style={{ color: MUTED }}>{sub}</p>
                     </div>
-                    <ExternalLink className="w-3.5 h-3.5 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity"
-                      style={{ color: MUTED }} />
+                    <ExternalLink className="w-3.5 h-3.5 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: MUTED }} />
                   </motion.a>
                 ))}
               </div>
@@ -1584,7 +1367,7 @@ export default function Portfolio() {
       <motion.button whileHover={{ scale: 1.12 }} whileTap={{ scale: 0.92 }}
         onClick={() => setChatOpen(v => !v)}
         className="fixed bottom-6 right-6 z-[150] w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-2xl"
-        style={{ background: "linear-gradient(135deg, #8b5cf6, #6366f1)", boxShadow: "0 8px 32px rgba(139,92,246,0.5)" }}>
+        style={{ background: "linear-gradient(135deg, #8b5cf6, #6366f1)", boxShadow: "0 8px 32px rgba(139,92,246,0.4)" }}>
         {chatOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
       </motion.button>
 
@@ -1594,7 +1377,7 @@ export default function Portfolio() {
             whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
             className="fixed bottom-6 left-6 z-[150] w-12 h-12 rounded-2xl flex items-center justify-center"
-            style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, color: ACCENT }}>
+            style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, color: ACCENT, boxShadow: CARD_SHADOW }}>
             <ArrowUp className="w-5 h-5" />
           </motion.button>
         )}
@@ -1604,25 +1387,15 @@ export default function Portfolio() {
       <AnimatePresence>
         {chatOpen && <ChatBot dark={dark} onClose={() => setChatOpen(false)} />}
       </AnimatePresence>
-
       <AnimatePresence>
-        {selectedCert && (
-          <CertificateModal achievement={selectedCert} dark={dark} onClose={() => setSelectedCert(null)} />
-        )}
+        {selectedCert && <CertificateModal achievement={selectedCert} dark={dark} onClose={() => setSelectedCert(null)} />}
       </AnimatePresence>
-
       <AnimatePresence>
-        {selectedPatent && (
-          <PatentModal patent={selectedPatent} dark={dark} onClose={() => setSelectedPatent(null)} />
-        )}
+        {selectedPatent && <PatentModal patent={selectedPatent} dark={dark} onClose={() => setSelectedPatent(null)} />}
       </AnimatePresence>
-
       <AnimatePresence>
-        {photoOpen && (
-          <PhotoLightbox dark={dark} accent={ACCENT} BG={BG} onClose={() => setPhotoOpen(false)} />
-        )}
+        {photoOpen && <PhotoLightbox dark={dark} accent={ACCENT} onClose={() => setPhotoOpen(false)} />}
       </AnimatePresence>
-
     </div>
   );
 }
