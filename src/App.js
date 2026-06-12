@@ -71,7 +71,7 @@ const projects = [
   {
     id: 2,
     title: "Fitness Guru – AI Fitness Trainer",
-    desc: "Fitness Guru is an AI-powered fitness system that uses pose estimation to detect exercises, analyze posture, and provide real-time feedback with interactive performance tracking dashboards. It continuously monitors user movements to ensure correct form and reduce the risk of injury.",
+    desc: "Fitness Guru is an AI-powered fitness system that uses pose estimation to detect exercises, analyze posture, and provide real-time feedback with interactive performance tracking dashboards.",
     tags: ["Computer Vision", "ML", "React", "Flask", "MediaPipe", "Chart.js"],
     gradient: ["#8B5CF6", "#EC4899"],
     github: "https://github.com/vinayrajv2005/ai-fitness-coach",
@@ -80,7 +80,7 @@ const projects = [
   {
     id: 3,
     title: "NEURON — RAG Document Chatbot",
-    desc: "AI-powered RAG chatbot that lets users upload multiple PDFs and chat with them intelligently. Uses local HuggingFace embeddings, FAISS vector search to retrieve relevant document chunks, and a local Flan-T5 LLM to generate grounded, context-aware answers — no API key required.",
+    desc: "AI-powered RAG chatbot that lets users upload multiple PDFs and chat with them intelligently. Uses local HuggingFace embeddings, FAISS vector search, and a local Flan-T5 LLM — no API key required.",
     tags: ["Python", "FastAPI", "HuggingFace", "Flan-T5", "RAG", "LangChain", "FAISS", "Vector Database", "PDF Processing", "Local LLM", "Transformers", "AI Chatbot", "Document QA"],
     gradient: ["#10B981", "#06B6D4"],
     github: "https://github.com/vinayrajv2005/neuron-rag",
@@ -89,7 +89,7 @@ const projects = [
   {
     id: 4,
     title: "ProteinAI — Structure & Mutation Lab",
-    desc: "Full-stack bioinformatics web app combining a Bidirectional LSTM for secondary structure prediction and an MLP for pathogenicity classification. Features an interactive Three.js 3D molecular viewer, per-residue confidence heatmap, Chart.js analytics, and full export capabilities.",
+    desc: "Full-stack bioinformatics web app combining a BiLSTM for secondary structure prediction and an MLP for pathogenicity classification. Features an interactive Three.js 3D molecular viewer and Chart.js analytics.",
     tags: ["Python", "PyTorch", "BiLSTM", "Flask", "Three.js", "Chart.js", "Bioinformatics", "Deep Learning", "BLOSUM62", "Healthcare AI", "Full-Stack"],
     gradient: ["#F59E0B", "#F97316"],
     github: "https://github.com/vinayrajv2005/protein-structure-predictor",
@@ -98,7 +98,7 @@ const projects = [
   {
     id: 5,
     title: "LexSimplify — Legal Document Intelligence Platform",
-    desc: "Full-stack NLP web app that transforms dense legal documents into plain language using a T5 transformer model. Supports PDF, DOCX, and scanned image input via Tesseract OCR. Features clause highlighter, risky clause detector, Flesch readability scoring, and multilingual translation into 15+ languages.",
+    desc: "Full-stack NLP web app that transforms dense legal documents into plain language using a T5 transformer. Supports PDF, DOCX, and scanned image input via Tesseract OCR with multilingual translation into 15+ languages.",
     tags: ["Python", "Flask", "T5 Transformer", "NLP", "HuggingFace", "Tesseract OCR", "Deep Learning", "Legal AI", "Multilingual", "Text Simplification", "PDF Processing", "Full-Stack"],
     gradient: ["#7c3aed", "#f59e0b"],
     github: "https://github.com/vinayrajv2005/legal-simplifier",
@@ -149,7 +149,14 @@ const patents = [
 const NAV = ["home", "about", "projects", "patents", "skills", "education", "achievements", "contact"];
 
 // ═══════════════════════════════════════════════════════════════
-// GRADIENT TEXT — safe for both light and dark mode
+// DETECT TOUCH DEVICE
+// ═══════════════════════════════════════════════════════════════
+function isTouchDevice() {
+  return (typeof window !== "undefined") && ("ontouchstart" in window || navigator.maxTouchPoints > 0);
+}
+
+// ═══════════════════════════════════════════════════════════════
+// GRADIENT TEXT
 // ═══════════════════════════════════════════════════════════════
 function GradientText({ dark, from, to, solidColor, children, style = {}, className = "" }) {
   if (dark) {
@@ -191,80 +198,80 @@ function CertificateModal({ achievement, dark, onClose }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}
-      className="fixed inset-0 z-[500] flex items-center justify-center p-4 md:p-8"
+      className="fixed inset-0 z-[500] flex items-center justify-center p-3 md:p-8"
       style={{ background: "rgba(0,0,0,0.75)", backdropFilter: "blur(16px)" }}>
       <motion.div
         initial={{ opacity: 0, scale: 0.85, y: 40 }} animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.9, y: 20 }} transition={{ type: "spring", stiffness: 300, damping: 28 }}
         onClick={(e) => e.stopPropagation()}
         className="relative w-full max-w-3xl rounded-3xl overflow-hidden flex flex-col"
-        style={{ background: BG, border: `1px solid ${accent}40`, boxShadow: `0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px ${accent}20`, maxHeight: "90vh" }}>
-        <div className="h-1 w-full" style={{ background: `linear-gradient(90deg, ${accent}, ${accent}80, transparent)` }} />
-        <div className="flex items-center justify-between px-6 py-4"
+        style={{ background: BG, border: `1px solid ${accent}40`, boxShadow: `0 30px 80px rgba(0,0,0,0.5), 0 0 0 1px ${accent}20`, maxHeight: "92vh" }}>
+        <div className="h-1 w-full flex-shrink-0" style={{ background: `linear-gradient(90deg, ${accent}, ${accent}80, transparent)` }} />
+        <div className="flex items-center justify-between px-4 py-3 flex-shrink-0"
           style={{ borderBottom: `0.5px solid ${BORDER}`, background: `linear-gradient(135deg, ${accent}10, transparent)` }}>
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-2xl flex items-center justify-center" style={{ background: accent + "25", border: `0.5px solid ${accent}50` }}>
-              <achievement.icon className="w-5 h-5" style={{ color: accent }} />
+          <div className="flex items-center gap-2 min-w-0 flex-1 mr-2">
+            <div className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0" style={{ background: accent + "25", border: `0.5px solid ${accent}50` }}>
+              <achievement.icon className="w-4 h-4" style={{ color: accent }} />
             </div>
-            <div>
-              <p className="text-sm font-bold leading-tight" style={{ color: TEXT }}>{achievement.title}</p>
-              <p className="text-xs" style={{ color: MUTED }}>{achievement.issuer} · {achievement.date}</p>
+            <div className="min-w-0">
+              <p className="text-xs font-bold leading-tight truncate" style={{ color: TEXT }}>{achievement.title}</p>
+              <p className="text-xs truncate" style={{ color: MUTED }}>{achievement.issuer} · {achievement.date}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {achievement.certificate && (
               <motion.a href={achievement.certificate} target="_blank" rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold"
+                whileTap={{ scale: 0.95 }}
+                className="flex items-center gap-1 px-3 py-1.5 rounded-xl text-xs font-bold"
                 style={{ background: accent + "20", color: accent, border: `0.5px solid ${accent}40` }}>
-                <ExternalLink className="w-3.5 h-3.5" /> Open Full
+                <ExternalLink className="w-3 h-3" /> Open
               </motion.a>
             )}
-            <motion.button whileHover={{ scale: 1.1, rotate: 90 }} whileTap={{ scale: 0.9 }} onClick={onClose}
+            <motion.button whileTap={{ scale: 0.9 }} onClick={onClose}
               className="w-9 h-9 rounded-xl flex items-center justify-center"
               style={{ background: CARD, border: `0.5px solid ${BORDER}`, color: MUTED }}>
               <X className="w-4 h-4" />
             </motion.button>
           </div>
         </div>
-        <div className="flex-1 overflow-auto p-6 flex items-center justify-center" style={{ minHeight: "300px" }}>
+        <div className="flex-1 overflow-auto p-4 flex items-center justify-center" style={{ minHeight: "250px" }}>
           {achievement.certificate ? (
             isEmbeddable ? (
               <iframe src={achievement.certificate} className="w-full rounded-2xl"
-                style={{ height: "500px", border: `0.5px solid ${BORDER}` }}
+                style={{ height: "420px", border: `0.5px solid ${BORDER}` }}
                 title={achievement.title} allow="autoplay" />
             ) : (
               <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="relative group w-full">
                 <img src={achievement.certificate} alt={achievement.title}
                   className="w-full rounded-2xl object-contain"
-                  style={{ maxHeight: "520px", border: `1px solid ${accent}30`, boxShadow: `0 8px 40px ${accent}20` }}
+                  style={{ maxHeight: "420px", border: `1px solid ${accent}30` }}
                   onError={(e) => { e.target.style.display = "none"; e.target.nextSibling.style.display = "flex"; }} />
                 <div className="w-full rounded-2xl items-center justify-center flex-col gap-3 py-16"
                   style={{ display: "none", background: CARD, border: `1px dashed ${BORDER}` }}>
                   <FileText className="w-12 h-12" style={{ color: MUTED }} />
                   <p className="text-sm" style={{ color: MUTED }}>Could not load certificate preview</p>
                   <motion.a href={achievement.certificate} target="_blank" rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }} className="px-5 py-2 rounded-xl text-sm font-bold"
+                    className="px-5 py-2 rounded-xl text-sm font-bold"
                     style={{ background: accent + "20", color: accent }}>Open in new tab</motion.a>
                 </div>
               </motion.div>
             )
           ) : (
             <motion.div initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }}
-              className="text-center py-16 px-8 w-full rounded-2xl"
+              className="text-center py-12 px-8 w-full rounded-2xl"
               style={{ background: CARD, border: `1px dashed ${BORDER}` }}>
-              <div className="w-20 h-20 rounded-3xl flex items-center justify-center mx-auto mb-5"
+              <div className="w-16 h-16 rounded-3xl flex items-center justify-center mx-auto mb-4"
                 style={{ background: accent + "15", border: `1px solid ${accent}30` }}>
-                <achievement.icon className="w-10 h-10" style={{ color: accent }} />
+                <achievement.icon className="w-8 h-8" style={{ color: accent }} />
               </div>
-              <h3 className="text-lg font-bold mb-2" style={{ color: TEXT }}>{achievement.title}</h3>
+              <h3 className="text-base font-bold mb-2" style={{ color: TEXT }}>{achievement.title}</h3>
               <p className="text-sm mb-1" style={{ color: MUTED }}>{achievement.issuer}</p>
-              <p className="text-xs font-mono mb-6" style={{ color: accent }}>{achievement.date}</p>
+              <p className="text-xs font-mono" style={{ color: accent }}>{achievement.date}</p>
             </motion.div>
           )}
         </div>
-        <div className="px-6 py-3 flex items-center justify-between" style={{ borderTop: `0.5px solid ${BORDER}` }}>
-          <p className="text-xs" style={{ color: MUTED }}>Press Esc to close</p>
+        <div className="px-4 py-2 flex-shrink-0 flex items-center justify-between" style={{ borderTop: `0.5px solid ${BORDER}` }}>
+          <p className="text-xs" style={{ color: MUTED }}>Tap outside to close</p>
           <div className="flex items-center gap-1.5 text-xs font-bold" style={{ color: accent }}>
             <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: accent }} />
             {achievement.issuer}
@@ -295,7 +302,7 @@ function PatentModal({ patent, dark, onClose }) {
 
   return (
     <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={onClose}
-      className="fixed inset-0 z-[500] flex items-center justify-center p-4 md:p-8"
+      className="fixed inset-0 z-[500] flex items-center justify-center p-3 md:p-8"
       style={{ background: "rgba(0,0,0,0.85)", backdropFilter: "blur(20px)" }}>
       <motion.div
         initial={{ opacity: 0, scale: 0.85, y: 40 }} animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -304,39 +311,39 @@ function PatentModal({ patent, dark, onClose }) {
         className="relative w-full max-w-4xl rounded-3xl overflow-hidden flex flex-col"
         style={{ background: BG, border: `1px solid ${accent}50`, boxShadow: `0 40px 100px rgba(0,0,0,0.6)`, maxHeight: "92vh" }}>
         <div className="h-1.5 w-full flex-shrink-0" style={{ background: "linear-gradient(90deg,#0EA5E9,#6366f1,#8b5cf6)" }} />
-        <div className="flex items-center justify-between px-6 py-4 flex-shrink-0"
+        <div className="flex items-center justify-between px-4 py-3 flex-shrink-0"
           style={{ borderBottom: `0.5px solid ${BORDER}`, background: `linear-gradient(135deg, ${accent}10, transparent)` }}>
-          <div className="flex items-center gap-3">
-            <div className="w-11 h-11 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
+          <div className="flex items-center gap-2 min-w-0 flex-1 mr-2">
+            <div className="w-10 h-10 rounded-xl flex items-center justify-center text-xl flex-shrink-0"
               style={{ background: accent + "20", border: `1px solid ${accent}40` }}>{patent.flag}</div>
-            <div>
-              <p className="text-xs font-bold uppercase tracking-widest mb-0.5" style={{ color: accent }}>UK Design Certificate · #{patent.id}</p>
-              <p className="text-sm font-bold leading-tight" style={{ color: TEXT }}>{patent.title}</p>
+            <div className="min-w-0">
+              <p className="text-xs font-bold uppercase tracking-widest mb-0.5 truncate" style={{ color: accent }}>UK Design Certificate · #{patent.id}</p>
+              <p className="text-xs font-bold leading-tight truncate" style={{ color: TEXT }}>{patent.title}</p>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-shrink-0">
             {patent.certificateUrl && (
               <motion.a href={patent.certificateUrl} target="_blank" rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                className="hidden sm:flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold"
+                whileTap={{ scale: 0.95 }}
+                className="hidden sm:flex items-center gap-1.5 px-3 py-1.5 rounded-xl text-xs font-bold"
                 style={{ background: accent + "20", color: accent, border: `0.5px solid ${accent}40` }}>
-                <ExternalLink className="w-3.5 h-3.5" /> Open PDF
+                <ExternalLink className="w-3 h-3" /> Open PDF
               </motion.a>
             )}
-            <motion.button whileHover={{ scale: 1.1, rotate: 90 }} whileTap={{ scale: 0.9 }} onClick={onClose}
+            <motion.button whileTap={{ scale: 0.9 }} onClick={onClose}
               className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0"
               style={{ background: CARD, border: `0.5px solid ${BORDER}`, color: MUTED }}>
               <X className="w-4 h-4" />
             </motion.button>
           </div>
         </div>
-        <div className="flex-1 overflow-hidden p-5" style={{ minHeight: "500px" }}>
+        <div className="flex-1 overflow-hidden p-4" style={{ minHeight: "400px" }}>
           <iframe src={patent.certificateUrl} className="w-full rounded-2xl"
-            style={{ height: "100%", minHeight: "560px", border: `1px solid ${accent}30`, background: "#fff" }}
+            style={{ height: "100%", minHeight: "420px", border: `1px solid ${accent}30`, background: "#fff" }}
             title="UK Design Certificate" />
         </div>
-        <div className="px-6 py-3 flex-shrink-0 flex items-center justify-between" style={{ borderTop: `0.5px solid ${BORDER}` }}>
-          <p className="text-xs" style={{ color: MUTED }}>Scroll inside viewer · Press Esc to close</p>
+        <div className="px-4 py-2 flex-shrink-0 flex items-center justify-between" style={{ borderTop: `0.5px solid ${BORDER}` }}>
+          <p className="text-xs" style={{ color: MUTED }}>Tap outside to close</p>
           <div className="flex items-center gap-1.5 text-xs font-bold" style={{ color: accent }}>
             <div className="w-1.5 h-1.5 rounded-full animate-pulse" style={{ background: accent }} />
             {patent.authority}
@@ -373,8 +380,8 @@ function PhotoLightbox({ dark, onClose, accent }) {
         <motion.img src="/vinay.jpeg" alt="Vinay Raj V"
           initial={{ opacity: 0, scale: 0.85 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.85 }}
           transition={{ type: "spring", stiffness: 260, damping: 24, delay: 0.05 }}
-          style={{ position: "relative", zIndex: 1, maxWidth: "88vw", maxHeight: "80vh", width: "auto", height: "auto",
-            minWidth: "260px", borderRadius: "24px", objectFit: "contain", display: "block",
+          style={{ position: "relative", zIndex: 1, maxWidth: "85vw", maxHeight: "75vh", width: "auto", height: "auto",
+            minWidth: "220px", borderRadius: "24px", objectFit: "contain", display: "block",
             boxShadow: `0 30px 80px rgba(0,0,0,0.7), 0 0 0 1px ${accent}30` }} />
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }}
           className="absolute bottom-4 left-1/2 flex items-center gap-2 px-4 py-2 rounded-2xl text-sm font-bold text-white"
@@ -384,7 +391,7 @@ function PhotoLightbox({ dark, onClose, accent }) {
         </motion.div>
       </motion.div>
       <motion.button initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }}
-        transition={{ delay: 0.15 }} whileHover={{ scale: 1.12, rotate: 90 }} whileTap={{ scale: 0.9 }}
+        transition={{ delay: 0.15 }} whileTap={{ scale: 0.9 }}
         onClick={onClose} className="absolute top-5 right-5 w-11 h-11 rounded-2xl flex items-center justify-center"
         style={{ background: "rgba(255,255,255,0.1)", border: "0.5px solid rgba(255,255,255,0.2)", color: "#fff", backdropFilter: "blur(8px)" }}>
         <X className="w-5 h-5" />
@@ -394,12 +401,13 @@ function PhotoLightbox({ dark, onClose, accent }) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// NEURAL CANVAS
+// NEURAL CANVAS — reduced particle count on mobile
 // ═══════════════════════════════════════════════════════════════
 function NeuralCanvas({ dark }) {
   const canvasRef = useRef(null);
   const animRef = useRef(null);
   const nodesRef = useRef([]);
+  const isTouch = isTouchDevice();
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -407,7 +415,9 @@ function NeuralCanvas({ dark }) {
     const ctx = canvas.getContext("2d");
     let W = canvas.width = window.innerWidth;
     let H = canvas.height = window.innerHeight;
-    const NODE_COUNT = Math.floor((W * H) / 18000);
+    // Reduce node count on mobile for performance
+    const divisor = isTouch ? 40000 : 18000;
+    const NODE_COUNT = Math.min(Math.floor((W * H) / divisor), isTouch ? 30 : 80);
     nodesRef.current = Array.from({ length: NODE_COUNT }, () => ({
       x: Math.random() * W, y: Math.random() * H,
       vx: (Math.random() - 0.5) * 0.4, vy: (Math.random() - 0.5) * 0.4,
@@ -452,13 +462,13 @@ function NeuralCanvas({ dark }) {
     };
     draw();
     return () => { cancelAnimationFrame(animRef.current); window.removeEventListener("resize", resize); };
-  }, [dark]);
+  }, [dark, isTouch]);
 
   return <canvas ref={canvasRef} className="fixed inset-0 z-0 pointer-events-none" />;
 }
 
 // ═══════════════════════════════════════════════════════════════
-// CUSTOM CURSOR
+// CUSTOM CURSOR — desktop only
 // ═══════════════════════════════════════════════════════════════
 function CustomCursor({ dark }) {
   const pos = useRef({ x: 0, y: 0 });
@@ -563,11 +573,11 @@ function SkillCategoriesGrid({ dark }) {
             <p className="text-sm font-bold mb-4 relative z-10" style={{ color: cat.accent }}>{cat.title}</p>
             <div className="flex flex-wrap gap-2 relative z-10">
               {cat.tags.map(tag => (
-                <motion.span key={tag} whileHover={{ scale: 1.07 }}
+                <span key={tag}
                   className="text-xs px-3 py-1.5 rounded-full font-medium cursor-default"
                   style={{ background: theme.bg, color: theme.text, border: `0.5px solid ${theme.border}` }}>
                   {tag}
-                </motion.span>
+                </span>
               ))}
             </div>
           </motion.div>
@@ -611,7 +621,7 @@ function ContactForm({ dark, CARD_BG, CARD_BORDER, TEXT, MUTED, ACCENT }) {
   };
 
   return (
-    <div className="rounded-3xl p-8 space-y-5"
+    <div className="rounded-3xl p-6 space-y-4"
       style={{ background: CARD_BG, border: `1px solid ${dark ? "rgba(255,255,255,0.07)" : "rgba(0,0,0,0.08)"}`, boxShadow: dark ? "none" : "0 4px 24px rgba(0,0,0,0.07)" }}>
       <div>
         <label style={labelStyle}>Name</label>
@@ -632,8 +642,7 @@ function ContactForm({ dark, CARD_BG, CARD_BORDER, TEXT, MUTED, ACCENT }) {
           style={{ ...inputStyle, resize: "vertical", lineHeight: 1.6 }}
           onFocus={e => (e.target.style.borderColor = ACCENT)} onBlur={e => (e.target.style.borderColor = dark ? "rgba(255,255,255,0.1)" : "rgba(0,0,0,0.12)")} />
       </div>
-      <motion.button whileHover={{ scale: status === "sending" ? 1 : 1.02, y: status === "sending" ? 0 : -2 }}
-        whileTap={{ scale: 0.97 }} onClick={handleSubmit}
+      <motion.button whileTap={{ scale: 0.97 }} onClick={handleSubmit}
         disabled={status === "sending" || status === "sent"}
         className="w-full py-3.5 rounded-2xl text-sm font-bold text-white flex items-center justify-center gap-2 transition-all"
         style={{
@@ -660,7 +669,7 @@ function ContactForm({ dark, CARD_BG, CARD_BORDER, TEXT, MUTED, ACCENT }) {
 }
 
 // ═══════════════════════════════════════════════════════════════
-// AI CHATBOT
+// AI CHATBOT — mobile-friendly layout
 // ═══════════════════════════════════════════════════════════════
 function ChatBot({ dark, onClose }) {
   const [msgs, setMsgs] = useState([
@@ -702,9 +711,9 @@ function ChatBot({ dark, onClose }) {
     <motion.div initial={{ opacity: 0, y: 30, scale: 0.9 }} animate={{ opacity: 1, y: 0, scale: 1 }}
       exit={{ opacity: 0, y: 30, scale: 0.9 }}
       style={{ background: bg, border: `1px solid ${border}`, boxShadow: `0 25px 60px rgba(0,0,0,0.2)` }}
-      className="fixed bottom-28 right-6 w-80 rounded-3xl z-[200] overflow-hidden flex flex-col">
+      className="fixed bottom-24 right-3 left-3 sm:left-auto sm:w-80 sm:right-6 rounded-3xl z-[200] overflow-hidden flex flex-col">
       <div style={{ borderBottom: `1px solid ${border}`, background: `linear-gradient(135deg, ${accent}15, transparent)` }}
-        className="p-4 flex items-center justify-between">
+        className="p-4 flex items-center justify-between flex-shrink-0">
         <div className="flex items-center gap-2">
           <div className="w-8 h-8 rounded-full flex items-center justify-center text-base" style={{ background: accent + "30" }}>🤖</div>
           <div>
@@ -715,9 +724,9 @@ function ChatBot({ dark, onClose }) {
             </div>
           </div>
         </div>
-        <button onClick={onClose} className="p-1 rounded-lg" style={{ color: mutedColor }}><X className="w-4 h-4" /></button>
+        <button onClick={onClose} className="p-2 rounded-lg" style={{ color: mutedColor }}><X className="w-4 h-4" /></button>
       </div>
-      <div className="flex-1 overflow-y-auto p-4 space-y-3 max-h-72">
+      <div className="flex-1 overflow-y-auto p-4 space-y-3" style={{ maxHeight: "50vh" }}>
         {msgs.map((m, i) => (
           <div key={i} className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
             <div className="max-w-[85%] rounded-2xl px-3 py-2 text-sm leading-relaxed"
@@ -742,18 +751,18 @@ function ChatBot({ dark, onClose }) {
         <div className="px-3 pb-2 flex flex-wrap gap-1.5">
           {["What are his skills?", "Tell me about his UK patent", "Is he open to internships?"].map(q => (
             <button key={q} onClick={() => setInput(q)}
-              className="text-xs px-2.5 py-1 rounded-full font-medium transition-all hover:scale-105"
+              className="text-xs px-2.5 py-1 rounded-full font-medium transition-all active:scale-95"
               style={{ background: accent + "18", color: accent, border: `0.5px solid ${accent}40` }}>{q}</button>
           ))}
         </div>
       )}
-      <div style={{ borderTop: `1px solid ${border}` }} className="p-3 flex gap-2">
+      <div style={{ borderTop: `1px solid ${border}` }} className="p-3 flex gap-2 flex-shrink-0">
         <input value={input} onChange={e => setInput(e.target.value)}
           onKeyDown={e => e.key === "Enter" && !e.shiftKey && send()}
           placeholder="Ask anything about Vinay…"
           className="flex-1 rounded-xl px-3 py-2 text-sm outline-none"
           style={{ background: inputBg, color: textColor, border: `0.5px solid ${border}` }} />
-        <motion.button whileHover={{ scale: 1.08 }} whileTap={{ scale: 0.94 }} onClick={send}
+        <motion.button whileTap={{ scale: 0.94 }} onClick={send}
           disabled={loading || !input.trim()}
           className="w-9 h-9 rounded-xl flex items-center justify-center flex-shrink-0 disabled:opacity-40"
           style={{ background: accent }}>
@@ -773,7 +782,7 @@ function Section({ id, children, className = "" }) {
 
 function SectionHead({ eyebrow, title, gradient, dark }) {
   return (
-    <div className="text-center mb-20">
+    <div className="text-center mb-16">
       <motion.p initial={{ opacity: 0, y: 8 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
         className="text-xs font-bold tracking-[0.35em] uppercase mb-3" style={{ color: gradient[0] }}>
         {eyebrow}
@@ -809,13 +818,16 @@ export default function Portfolio() {
   const [showAll, setShowAll] = useState(false);
   const INITIAL_COUNT = 4;
 
+  // Detect touch once at mount
+  const isTouch = useRef(isTouchDevice()).current;
+
   const typed = useTyping(TYPING_ROLES);
   const { scrollYProgress } = useScroll();
   const progressW = useTransform(scrollYProgress, [0, 1], ["0%", "100%"]);
 
   useEffect(() => {
     const onScroll = () => setShowTop(window.scrollY > 400);
-    window.addEventListener("scroll", onScroll);
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
@@ -845,8 +857,11 @@ export default function Portfolio() {
   const NAV_BG      = dark ? "rgba(2,6,23,0.85)"      : "rgba(250,250,250,0.92)";
   const NAV_BORDER  = dark ? "rgba(255,255,255,0.06)" : "rgba(0,0,0,0.08)";
 
+  // On touch devices: normal cursor, no custom cursor component
+  const cursorStyle = isTouch ? "auto" : "none";
+
   return (
-    <div style={{ background: BG, color: TEXT, cursor: "none", fontFamily: "'DM Sans','Nunito',sans-serif", minHeight: "100vh", overflowX: "hidden" }}>
+    <div style={{ background: BG, color: TEXT, cursor: cursorStyle, fontFamily: "'DM Sans','Nunito',sans-serif", minHeight: "100vh", overflowX: "hidden" }}>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;500;700&family=JetBrains+Mono:wght@400;600&display=swap');
@@ -855,10 +870,15 @@ export default function Portfolio() {
         ::-webkit-scrollbar { width: 3px; }
         ::-webkit-scrollbar-thumb { background: ${ACCENT}; border-radius: 2px; }
         ::selection { background: ${ACCENT}40; }
+        /* Improve tap targets on mobile */
+        button, a { -webkit-tap-highlight-color: transparent; }
+        /* Prevent zoom on input focus iOS */
+        input, textarea, select { font-size: 16px !important; }
       `}</style>
 
       <NeuralCanvas dark={dark} />
-      <CustomCursor dark={dark} />
+      {/* Custom cursor only on non-touch devices */}
+      {!isTouch && <CustomCursor dark={dark} />}
 
       {/* Scroll Progress */}
       <motion.div className="fixed top-0 left-0 h-[3px] z-[100]"
@@ -868,9 +888,9 @@ export default function Portfolio() {
       <motion.nav initial={{ y: -60, opacity: 0 }} animate={{ y: 0, opacity: 1 }} transition={{ duration: 0.6 }}
         className="fixed top-0 left-0 right-0 z-50 backdrop-blur-2xl"
         style={{ background: NAV_BG, borderBottom: `0.5px solid ${NAV_BORDER}` }}>
-        <div className="max-w-7xl mx-auto px-6 py-3 flex justify-between items-center">
+        <div className="max-w-7xl mx-auto px-4 py-3 flex justify-between items-center">
           <motion.a href="https://my-portfolio-nmj4.vercel.app/" target="_blank" rel="noopener noreferrer"
-            whileHover={{ scale: 1.05 }} className="text-xl font-black tracking-tight"
+            className="text-xl font-black tracking-tight"
             style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: "0.05em", color: ACCENT, textDecoration: "none" }}>
             VINAY RAJ V
           </motion.a>
@@ -888,14 +908,16 @@ export default function Portfolio() {
             ))}
           </div>
           <div className="flex items-center gap-2">
-            <motion.button whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }} onClick={() => setDark(!dark)}
+            <motion.button whileTap={{ scale: 0.9 }} onClick={() => setDark(!dark)}
               className="p-2 rounded-xl" style={{ color: MUTED, border: `0.5px solid ${CARD_BORDER}`, background: CARD_BG }}>
               {dark ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
             </motion.button>
-            <motion.a href="/Vinay Raj V Resume.pdf" download whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-              className="hidden md:flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs font-bold text-white"
+            {/* ✅ FIX: Resume button visible on ALL screen sizes */}
+            <motion.a href="/Vinay Raj V Resume.pdf" download whileTap={{ scale: 0.95 }}
+              className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs font-bold text-white"
               style={{ background: `linear-gradient(135deg, ${ACCENT}, #8b5cf6)`, boxShadow: `0 4px 20px ${ACCENT}40` }}>
-              <Download className="w-3.5 h-3.5" /> Resume
+              <Download className="w-3.5 h-3.5" />
+              <span className="hidden sm:inline">Resume</span>
             </motion.a>
             <button className="lg:hidden p-2" style={{ color: MUTED }} onClick={() => setMobileMenuOpen(v => !v)}>
               <div className="w-5 space-y-1">
@@ -909,20 +931,26 @@ export default function Portfolio() {
         <AnimatePresence>
           {mobileMenuOpen && (
             <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }}
-              className="lg:hidden overflow-hidden px-6 pb-4 flex flex-wrap gap-2"
+              className="lg:hidden overflow-hidden px-4 pb-4 flex flex-wrap gap-2"
               style={{ borderTop: `0.5px solid ${NAV_BORDER}` }}>
               {NAV.map(s => (
                 <a key={s} href={`#${s}`} onClick={() => setMobileMenuOpen(false)}
-                  className="px-3 py-1.5 rounded-lg text-xs font-bold uppercase tracking-wider capitalize"
+                  className="px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider capitalize"
                   style={{ color: ACCENT, background: ACCENT + "15", border: `0.5px solid ${ACCENT}30` }}>{s}</a>
               ))}
+              {/* Resume link also in mobile menu */}
+              <a href="/Vinay Raj V Resume.pdf" download onClick={() => setMobileMenuOpen(false)}
+                className="px-3 py-2 rounded-lg text-xs font-bold uppercase tracking-wider flex items-center gap-1"
+                style={{ color: "#fff", background: `linear-gradient(135deg, ${ACCENT}, #8b5cf6)` }}>
+                <Download className="w-3 h-3" /> Resume
+              </a>
             </motion.div>
           )}
         </AnimatePresence>
       </motion.nav>
 
       {/* ── HERO ── */}
-      <Section id="home" className="min-h-screen flex flex-col justify-center items-center text-center px-6 pt-20">
+      <Section id="home" className="min-h-screen flex flex-col justify-center items-center text-center px-4 pt-20">
         <motion.div initial={{ scale: 0, opacity: 0 }} animate={{ scale: 1, opacity: 1 }}
           transition={{ type: "spring", stiffness: 180, delay: 0.2 }} className="relative mb-8">
           <motion.div animate={{ rotate: 360 }} transition={{ duration: 15, repeat: Infinity, ease: "linear" }}
@@ -930,16 +958,15 @@ export default function Portfolio() {
             style={{ background: `conic-gradient(${ACCENT}, #8b5cf6, #ec4899, ${ACCENT})`, padding: "3px" }}>
             <div className="w-full h-full rounded-full" style={{ background: BG }} />
           </motion.div>
-          <motion.div onClick={() => setPhotoOpen(true)} whileHover={{ scale: 1.06 }} whileTap={{ scale: 0.97 }}
-            title="Click to view full photo"
+          <div onClick={() => setPhotoOpen(true)}
+            title="Tap to view full photo"
             style={{ position: "relative", zIndex: 1, width: "112px", height: "112px", borderRadius: "50%", overflow: "hidden", cursor: "pointer" }}>
             <img src="/vinay.jpeg" alt="Vinay"
               style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center top" }} />
-            <motion.div initial={{ opacity: 0 }} whileHover={{ opacity: 1 }}
-              style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "rgba(0,0,0,0.45)", display: "flex", alignItems: "center", justifyContent: "center" }}>
+            <div style={{ position: "absolute", inset: 0, borderRadius: "50%", background: "rgba(0,0,0,0.3)", display: "flex", alignItems: "center", justifyContent: "center" }}>
               <ZoomIn style={{ color: "#fff", width: "22px", height: "22px" }} />
-            </motion.div>
-          </motion.div>
+            </div>
+          </div>
           <div className="absolute -bottom-1 -right-1 w-5 h-5 rounded-full border-2 animate-pulse"
             style={{ background: "#22c55e", borderColor: BG, zIndex: 2 }} />
         </motion.div>
@@ -950,7 +977,7 @@ export default function Portfolio() {
         </motion.div>
 
         <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.4, duration: 0.9 }}
-          className="text-6xl md:text-8xl lg:text-9xl font-black mb-3 leading-none"
+          className="text-5xl md:text-8xl lg:text-9xl font-black mb-3 leading-none"
           style={{ fontFamily: "'Bebas Neue',sans-serif", letterSpacing: "0.02em" }}>
           <span style={{ color: TEXT }}>VINAY </span>
           <GradientText dark={dark} from={ACCENT} to="#ec4899" solidColor={ACCENT}>RAJ V</GradientText>
@@ -958,41 +985,40 @@ export default function Portfolio() {
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.8 }}
           className="flex items-center gap-2 mb-6 h-10" style={{ fontFamily: "'JetBrains Mono',monospace" }}>
-          <span className="text-lg md:text-2xl font-semibold" style={{ color: ACCENT }}>&gt; {typed}</span>
+          <span className="text-base md:text-2xl font-semibold" style={{ color: ACCENT }}>&gt; {typed}</span>
           <motion.span animate={{ opacity: [1, 0] }} transition={{ duration: 0.5, repeat: Infinity }}
             className="w-0.5 h-7 rounded-full inline-block" style={{ background: ACCENT }} />
         </motion.div>
 
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 1 }}
-          className="text-base md:text-lg max-w-lg mx-auto mb-8 leading-relaxed" style={{ color: MUTED }}>
-          6th Semester AIML student crafting intelligent systems that bridge<br />cutting-edge research with real-world impact.
+          className="text-sm md:text-lg max-w-lg mx-auto mb-8 leading-relaxed px-2" style={{ color: MUTED }}>
+          6th Semester AIML student crafting intelligent systems that bridge cutting-edge research with real-world impact.
         </motion.p>
 
         <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.05 }}
           onClick={() => setSelectedPatent(patents[0])}
           className="flex items-center gap-2 mb-8 px-4 py-2 rounded-full cursor-pointer"
-          style={{ background: "rgba(14,165,233,0.1)", border: "1px solid rgba(14,165,233,0.3)" }}
-          whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.97 }}>
+          style={{ background: "rgba(14,165,233,0.1)", border: "1px solid rgba(14,165,233,0.3)" }}>
           <span className="text-sm">🇬🇧</span>
           <span className="text-xs font-bold" style={{ color: "#0EA5E9" }}>UK Registered Design Holder · Design #6497347</span>
           <Shield className="w-3 h-3" style={{ color: "#0EA5E9" }} />
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 1.2 }}
-          className="flex flex-col sm:flex-row gap-3 mb-16">
-          <motion.a href="#projects" whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.97 }}
-            className="px-8 py-3.5 rounded-2xl text-sm font-bold text-white flex items-center gap-2"
+          className="flex flex-col sm:flex-row gap-3 mb-16 w-full max-w-sm sm:max-w-none sm:w-auto px-4 sm:px-0">
+          <motion.a href="#projects" whileTap={{ scale: 0.97 }}
+            className="px-6 py-3.5 rounded-2xl text-sm font-bold text-white flex items-center justify-center gap-2"
             style={{ background: `linear-gradient(135deg, ${ACCENT}, #8b5cf6)`, boxShadow: `0 8px 30px ${ACCENT}40` }}>
             <Zap className="w-4 h-4" /> View My Work
           </motion.a>
-          <motion.a href="#contact" whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.97 }}
-            className="px-8 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-2"
+          <motion.a href="#contact" whileTap={{ scale: 0.97 }}
+            className="px-6 py-3.5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2"
             style={{ background: CARD_BG, border: `1px solid ${CARD_BORDER}`, color: TEXT, boxShadow: CARD_SHADOW }}>
             <Mail className="w-4 h-4" /> Say Hello
           </motion.a>
-          <motion.button whileHover={{ scale: 1.05, y: -3 }} whileTap={{ scale: 0.97 }}
+          <motion.button whileTap={{ scale: 0.97 }}
             onClick={() => setChatOpen(true)}
-            className="px-8 py-3.5 rounded-2xl text-sm font-bold flex items-center gap-2"
+            className="px-6 py-3.5 rounded-2xl text-sm font-bold flex items-center justify-center gap-2"
             style={{ background: "#8b5cf620", border: `1px solid #8b5cf640`, color: dark ? "#a78bfa" : "#7c3aed" }}>
             <MessageCircle className="w-4 h-4" /> Ask AI About Me
           </motion.button>
@@ -1003,10 +1029,10 @@ export default function Portfolio() {
       </Section>
 
       {/* ── ABOUT ── */}
-      <Section id="about" className="py-28 px-6">
+      <Section id="about" className="py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <SectionHead dark={dark} eyebrow="Who I Am" title="About Me" gradient={[ACCENT, "#8b5cf6"]} />
-          <div className="grid md:grid-cols-2 gap-16 items-center">
+          <div className="grid md:grid-cols-2 gap-12 items-center">
             <motion.div initial={{ opacity: 0, x: -40 }} whileInView={{ opacity: 1, x: 0 }} viewport={{ once: true }}
               transition={{ duration: 0.7 }} className="space-y-5 leading-relaxed" style={{ color: MUTED, fontSize: "1.05rem" }}>
               <p>Passionate AIML student from Shivamogga, Karnataka, currently in my 6th semester diving deep into Machine Learning, Neural Networks, and modern AI systems.</p>
@@ -1026,8 +1052,8 @@ export default function Portfolio() {
                 { val: 7,  suffix: "+", label: "Certifications", icon: "🏆" },
               ].map((s, i) => (
                 <motion.div key={s.label} initial={{ opacity: 0, scale: 0.8 }} whileInView={{ opacity: 1, scale: 1 }}
-                  viewport={{ once: true }} transition={{ delay: i * 0.1 }} whileHover={{ y: -5 }}
-                  className="rounded-2xl p-6 text-center"
+                  viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+                  className="rounded-2xl p-5 text-center"
                   style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, boxShadow: CARD_SHADOW }}>
                   <div className="text-3xl mb-2">{s.icon}</div>
                   <div className="text-3xl font-black mb-1" style={{ fontFamily: "'Bebas Neue',sans-serif", color: ACCENT }}>
@@ -1042,53 +1068,52 @@ export default function Portfolio() {
       </Section>
 
       {/* ── PROJECTS ── */}
-      <Section id="projects" className="py-28 px-6">
+      <Section id="projects" className="py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <SectionHead dark={dark} eyebrow="What I've Built" title="Featured Projects" gradient={["#8b5cf6", "#ec4899"]} />
-          <div className="flex flex-wrap justify-center gap-2 mb-12">
+          {/* ✅ FIX: Horizontally scrollable filter tags on mobile */}
+          <div className="flex overflow-x-auto gap-2 mb-10 pb-2 -mx-4 px-4 scrollbar-hide"
+            style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}>
             {allTags.map(tag => (
-              <motion.button key={tag} onClick={() => setFilter(tag)} whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}
-                className="px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all"
+              <motion.button key={tag} onClick={() => setFilter(tag)} whileTap={{ scale: 0.95 }}
+                className="flex-shrink-0 px-4 py-1.5 rounded-full text-xs font-bold flex items-center gap-1.5 transition-all"
                 style={{
                   background: filter === tag ? "linear-gradient(135deg, #8b5cf6, #ec4899)" : CARD_BG,
                   color: filter === tag ? "#fff" : MUTED,
                   border: `0.5px solid ${filter === tag ? "transparent" : CARD_BORDER}`,
-                  boxShadow: filter === tag ? "none" : CARD_SHADOW,
                 }}>
                 {tag === "All" && <Filter className="w-3 h-3" />} {tag}
               </motion.button>
             ))}
           </div>
-          <div className="grid md:grid-cols-2 gap-8">
+          <div className="grid md:grid-cols-2 gap-6">
             <AnimatePresence mode="popLayout">
               {visibleProjects.map((p, idx) => (
                 <motion.div key={p.id} layout initial={{ opacity: 0, y: 40 }} animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, scale: 0.9 }} transition={{ delay: idx * 0.08 }} whileHover={{ y: -8 }}
-                  className="rounded-3xl p-8 group relative overflow-hidden"
+                  exit={{ opacity: 0, scale: 0.9 }} transition={{ delay: idx * 0.08 }}
+                  className="rounded-3xl p-6 group relative overflow-hidden"
                   style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, boxShadow: CARD_SHADOW }}>
                   <div className="absolute top-0 left-0 right-0 h-1 rounded-t-3xl"
                     style={{ background: `linear-gradient(90deg, ${p.gradient[0]}, ${p.gradient[1]})` }} />
-                  <div className="absolute -top-20 -right-20 w-40 h-40 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500 blur-3xl"
-                    style={{ background: p.gradient[0] + "20" }} />
                   <div className="relative z-10">
-                    <div className="flex items-start justify-between mb-5">
-                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform"
+                    <div className="flex items-start justify-between mb-4">
+                      <div className="w-12 h-12 rounded-2xl flex items-center justify-center"
                         style={{ background: `linear-gradient(135deg, ${p.gradient[0]}, ${p.gradient[1]})` }}>
                         <Code2 className="w-6 h-6 text-white" />
                       </div>
                       <span className="px-2 py-0.5 rounded-full text-xs"
                         style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, color: MUTED }}>{p.year}</span>
                     </div>
-                    <h3 className="text-lg font-bold mb-2" style={{ color: TEXT }}>{p.title}</h3>
-                    <p className="text-sm leading-relaxed mb-5" style={{ color: MUTED }}>{p.desc}</p>
-                    <div className="flex flex-wrap gap-1.5 mb-6">
+                    <h3 className="text-base font-bold mb-2" style={{ color: TEXT }}>{p.title}</h3>
+                    <p className="text-sm leading-relaxed mb-4" style={{ color: MUTED }}>{p.desc}</p>
+                    <div className="flex flex-wrap gap-1.5 mb-5">
                       {p.tags.map(t => (
                         <span key={t} className="px-2.5 py-1 rounded-full text-xs font-bold"
                           style={{ background: p.gradient[0] + "18", color: p.gradient[0], border: `0.5px solid ${p.gradient[0]}40` }}>{t}</span>
                       ))}
                     </div>
                     <motion.a href={p.github} target="_blank" rel="noopener noreferrer"
-                      whileHover={{ scale: 1.04 }} whileTap={{ scale: 0.96 }}
+                      whileTap={{ scale: 0.96 }}
                       className="inline-flex items-center gap-1.5 px-5 py-2.5 rounded-xl text-sm font-bold text-white"
                       style={{ background: `linear-gradient(135deg, ${p.gradient[0]}, ${p.gradient[1]})` }}>
                       <Github className="w-4 h-4" /> View on GitHub
@@ -1099,27 +1124,24 @@ export default function Portfolio() {
             </AnimatePresence>
           </div>
           {hasMore && (
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.3 }}
-              className="flex justify-center mt-12">
-              <motion.button whileHover={{ scale: 1.05, y: -2 }} whileTap={{ scale: 0.97 }}
+            <div className="flex justify-center mt-10">
+              <motion.button whileTap={{ scale: 0.97 }}
                 onClick={() => setShowAll(v => !v)}
                 className="flex items-center gap-2 px-8 py-3.5 rounded-2xl text-sm font-bold transition-all"
                 style={{ background: CARD_BG, border: `1px solid ${CARD_BORDER}`, color: TEXT, boxShadow: CARD_SHADOW }}>
                 {showAll ? (
-                  <><motion.span animate={{ rotate: 180 }} transition={{ duration: 0.3 }} style={{ display: "inline-flex" }}>
-                    <ChevronDown className="w-4 h-4" style={{ color: ACCENT }} />
-                  </motion.span> Show Less</>
+                  <><ChevronDown className="w-4 h-4 rotate-180" style={{ color: ACCENT }} /> Show Less</>
                 ) : (
                   <><ChevronDown className="w-4 h-4" style={{ color: ACCENT }} /> Show More ({filteredProjects.length - INITIAL_COUNT} more)</>
                 )}
               </motion.button>
-            </motion.div>
+            </div>
           )}
         </div>
       </Section>
 
       {/* ── PATENTS ── */}
-      <Section id="patents" className="py-28 px-6">
+      <Section id="patents" className="py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <SectionHead dark={dark} eyebrow="Intellectual Property" title="Registered Design" gradient={["#0EA5E9", "#6366f1"]} />
           {patents.map((patent, i) => (
@@ -1128,11 +1150,11 @@ export default function Portfolio() {
               <div className="rounded-3xl overflow-hidden relative"
                 style={{ background: CARD_BG, border: "1px solid rgba(14,165,233,0.25)", boxShadow: dark ? "0 0 60px rgba(14,165,233,0.05)" : "0 4px 32px rgba(14,165,233,0.08)" }}>
                 <div className="h-1.5 w-full" style={{ background: "linear-gradient(90deg,#0EA5E9,#6366f1,#8b5cf6)" }} />
-                <div className="p-8 md:p-12">
+                <div className="p-6 md:p-10">
                   <div className="flex flex-col md:flex-row gap-8 items-start">
-                    <div className="flex-1 space-y-6">
+                    <div className="flex-1 space-y-5">
                       <div className="flex items-start gap-4">
-                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center text-3xl flex-shrink-0"
+                        <div className="w-14 h-14 rounded-2xl flex items-center justify-center text-2xl flex-shrink-0"
                           style={{ background: "rgba(14,165,233,0.15)", border: "1px solid rgba(14,165,233,0.3)" }}>
                           {patent.flag}
                         </div>
@@ -1147,7 +1169,7 @@ export default function Portfolio() {
                               ✓ Granted
                             </span>
                           </div>
-                          <h3 className="text-2xl md:text-3xl font-black leading-tight"
+                          <h3 className="text-xl md:text-3xl font-black leading-tight"
                             style={{ fontFamily: "'Bebas Neue',sans-serif", color: TEXT }}>{patent.title}</h3>
                           <p className="text-sm mt-1" style={{ color: MUTED }}>{patent.authority}</p>
                         </div>
@@ -1183,24 +1205,22 @@ export default function Portfolio() {
                           ))}
                         </div>
                       </div>
-                      <motion.button whileHover={{ scale: 1.04, y: -2 }} whileTap={{ scale: 0.97 }}
+                      <motion.button whileTap={{ scale: 0.97 }}
                         onClick={() => setSelectedPatent(patent)}
                         className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white"
                         style={{ background: "linear-gradient(135deg,#0EA5E9,#6366f1)", boxShadow: "0 8px 24px rgba(14,165,233,0.3)" }}>
                         <Eye className="w-4 h-4" /> View Certificate
                       </motion.button>
                     </div>
-                    <div className="flex-shrink-0 flex flex-col items-center justify-center gap-4 md:w-64">
+                    <div className="flex-shrink-0 flex flex-col items-center justify-center gap-4 md:w-56">
                       <motion.div animate={{ rotate: [0, 5, -5, 0], scale: [1, 1.03, 1] }}
                         transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-40 h-40 rounded-3xl flex items-center justify-center relative"
+                        className="w-36 h-36 rounded-3xl flex items-center justify-center relative"
                         style={{ background: "linear-gradient(135deg,rgba(14,165,233,0.15),rgba(99,102,241,0.1))", border: "1px solid rgba(14,165,233,0.3)" }}>
-                        <Shield className="w-20 h-20" style={{ color: "#0EA5E9", opacity: 0.8 }} />
-                        <div className="absolute inset-0 rounded-3xl"
-                          style={{ background: "radial-gradient(circle at 30% 30%,rgba(14,165,233,0.15),transparent)" }} />
+                        <Shield className="w-16 h-16" style={{ color: "#0EA5E9", opacity: 0.8 }} />
                       </motion.div>
                       <div className="text-center">
-                        <p className="text-3xl font-black" style={{ fontFamily: "'Bebas Neue',sans-serif", color: "#0EA5E9" }}>#{patent.id}</p>
+                        <p className="text-2xl font-black" style={{ fontFamily: "'Bebas Neue',sans-serif", color: "#0EA5E9" }}>#{patent.id}</p>
                         <p className="text-xs" style={{ color: MUTED }}>Design Registration Number</p>
                       </div>
                       <div className="flex items-center gap-2 px-4 py-2 rounded-full"
@@ -1218,7 +1238,7 @@ export default function Portfolio() {
       </Section>
 
       {/* ── SKILLS ── */}
-      <Section id="skills" className="py-28 px-6">
+      <Section id="skills" className="py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <SectionHead dark={dark} eyebrow="What I Work With" title="Tech Stack" gradient={["#ec4899", "#f97316"]} />
           <SkillCategoriesGrid dark={dark} />
@@ -1226,7 +1246,7 @@ export default function Portfolio() {
       </Section>
 
       {/* ── EDUCATION ── */}
-      <Section id="education" className="py-28 px-6">
+      <Section id="education" className="py-24 px-4">
         <div className="max-w-4xl mx-auto">
           <SectionHead dark={dark} eyebrow="My Journey" title="Education" gradient={["#06b6d4", "#3b82f6"]} />
           <div className="relative pl-8 md:pl-12">
@@ -1234,16 +1254,16 @@ export default function Portfolio() {
               style={{ background: `linear-gradient(to bottom, ${ACCENT}80, transparent)` }} />
             {education.map((e, i) => (
               <motion.div key={i} initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
-                viewport={{ once: true }} transition={{ delay: i * 0.15 }} className="relative mb-10">
+                viewport={{ once: true }} transition={{ delay: i * 0.15 }} className="relative mb-8">
                 <div className="absolute -left-5 md:-left-7 top-4 w-4 h-4 rounded-full border-2 flex items-center justify-center"
                   style={{ background: BG, borderColor: ACCENT }}>
                   <div className="w-2 h-2 rounded-full" style={{ background: ACCENT }} />
                 </div>
-                <div className="rounded-2xl p-6" style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, boxShadow: CARD_SHADOW }}>
-                  <div className="flex flex-wrap items-start justify-between gap-3 mb-2">
+                <div className="rounded-2xl p-5" style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, boxShadow: CARD_SHADOW }}>
+                  <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
                     <div className="flex items-center gap-2">
                       <span className="text-xl">{e.icon}</span>
-                      <h3 className="font-bold" style={{ color: TEXT }}>{e.degree}</h3>
+                      <h3 className="font-bold text-sm" style={{ color: TEXT }}>{e.degree}</h3>
                     </div>
                     <span className="text-xs font-mono px-3 py-1 rounded-full flex items-center gap-1.5"
                       style={{ background: ACCENT + "15", color: ACCENT, border: `0.5px solid ${ACCENT}30` }}>
@@ -1263,36 +1283,31 @@ export default function Portfolio() {
       </Section>
 
       {/* ── ACHIEVEMENTS ── */}
-      <Section id="achievements" className="py-28 px-6">
+      <Section id="achievements" className="py-24 px-4">
         <div className="max-w-6xl mx-auto">
           <SectionHead dark={dark} eyebrow="Recognition" title="Achievements" gradient={["#f59e0b", "#f97316"]} />
-          <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 1 }} viewport={{ once: true }}
-            className="text-center text-xs mb-10 flex items-center justify-center gap-1.5" style={{ color: MUTED }}>
-            <Eye className="w-3.5 h-3.5" /> Click any card to view the certificate
-          </motion.p>
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <p className="text-center text-xs mb-8 flex items-center justify-center gap-1.5" style={{ color: MUTED }}>
+            <Eye className="w-3.5 h-3.5" /> Tap any card to view the certificate
+          </p>
+          <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4">
             {achievements.map((a, i) => (
               <motion.div key={i} initial={{ opacity: 0, scale: 0.85 }} whileInView={{ opacity: 1, scale: 1 }}
                 viewport={{ once: true }} transition={{ delay: i * 0.1 }}
-                whileHover={{ y: -8, scale: 1.02 }} whileTap={{ scale: 0.97 }}
+                whileTap={{ scale: 0.97 }}
                 onClick={() => setSelectedCert(a)}
-                className="rounded-3xl p-6 text-center group relative overflow-hidden"
+                className="rounded-2xl p-4 text-center group relative overflow-hidden"
                 style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, cursor: "pointer", boxShadow: CARD_SHADOW }}>
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-3xl pointer-events-none"
-                  style={{ background: `radial-gradient(circle at 50% 0%, ${a.accent}15, transparent 70%)` }} />
-                <div className="absolute top-0 left-0 right-0 h-0.5 rounded-t-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                  style={{ background: `linear-gradient(90deg, transparent, ${a.accent}, transparent)` }} />
                 <div className="relative z-10">
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform"
+                  <div className="w-10 h-10 rounded-2xl flex items-center justify-center mx-auto mb-3"
                     style={{ background: a.accent + "20", border: `0.5px solid ${a.accent}40` }}>
-                    <a.icon className="w-6 h-6" style={{ color: a.accent }} />
+                    <a.icon className="w-5 h-5" style={{ color: a.accent }} />
                   </div>
-                  <h3 className="font-bold text-sm mb-2 leading-snug" style={{ color: TEXT }}>{a.title}</h3>
+                  <h3 className="font-bold text-xs mb-1 leading-snug" style={{ color: TEXT }}>{a.title}</h3>
                   <p className="text-xs mb-1" style={{ color: MUTED }}>{a.issuer}</p>
-                  <p className="text-xs font-mono mb-3" style={{ color: a.accent }}>{a.date}</p>
-                  <div className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold opacity-0 group-hover:opacity-100 transition-all duration-200 translate-y-1 group-hover:translate-y-0"
+                  <p className="text-xs font-mono mb-2" style={{ color: a.accent }}>{a.date}</p>
+                  <div className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-xs font-bold"
                     style={{ background: a.certificate ? a.accent + "20" : "rgba(100,116,139,0.15)", color: a.certificate ? a.accent : MUTED, border: `0.5px solid ${a.certificate ? a.accent + "40" : "rgba(100,116,139,0.3)"}` }}>
-                    {a.certificate ? <><Eye className="w-3 h-3" /> View Certificate</> : <><Sparkles className="w-3 h-3" /> Coming Soon</>}
+                    {a.certificate ? <><Eye className="w-3 h-3" /> View</> : <><Sparkles className="w-3 h-3" /> Soon</>}
                   </div>
                 </div>
               </motion.div>
@@ -1302,10 +1317,10 @@ export default function Portfolio() {
       </Section>
 
       {/* ── CONTACT ── */}
-      <Section id="contact" className="py-28 px-6">
+      <Section id="contact" className="py-24 px-4">
         <div className="max-w-5xl mx-auto">
           <SectionHead dark={dark} eyebrow="Get In Touch" title="Let's Connect" gradient={["#10b981", "#06b6d4"]} />
-          <div className="grid md:grid-cols-2 gap-12 items-start">
+          <div className="grid md:grid-cols-2 gap-10 items-start">
             <motion.div initial={{ opacity: 0, x: -30 }} whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }} transition={{ duration: 0.6 }}>
               <h3 className="text-3xl font-black mb-4 leading-tight" style={{ fontFamily: "'Bebas Neue',sans-serif", color: TEXT }}>
@@ -1313,8 +1328,7 @@ export default function Portfolio() {
                 <GradientText dark={dark} from="#10b981" to="#06b6d4" solidColor="#10b981">opportunities</GradientText>
               </h3>
               <p className="text-sm leading-relaxed mb-8" style={{ color: MUTED }}>
-                Looking for internships, ML freelance work, or collaborations.<br />
-                Have something cool in mind? I'd love to hear about it.
+                Looking for internships, ML freelance work, or collaborations. Have something cool in mind? I'd love to hear about it.
               </p>
               <div className="space-y-3">
                 {[
@@ -1327,10 +1341,10 @@ export default function Portfolio() {
                     target={href.startsWith("mailto") ? "_self" : "_blank"} rel="noopener noreferrer"
                     initial={{ opacity: 0, x: -20 }} whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true }} transition={{ delay: i * 0.08 }}
-                    whileHover={{ x: 6, scale: 1.01 }} whileTap={{ scale: 0.98 }}
+                    whileTap={{ scale: 0.98 }}
                     className="flex items-center gap-4 p-4 rounded-2xl group transition-all"
                     style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, textDecoration: "none", boxShadow: CARD_SHADOW }}>
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform"
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center flex-shrink-0"
                       style={{ background: color + "20", border: `0.5px solid ${color}40` }}>
                       <Icon className="w-5 h-5" style={{ color }} />
                     </div>
@@ -1338,7 +1352,7 @@ export default function Portfolio() {
                       <p className="text-sm font-bold" style={{ color: TEXT }}>{label}</p>
                       <p className="text-xs truncate" style={{ color: MUTED }}>{sub}</p>
                     </div>
-                    <ExternalLink className="w-3.5 h-3.5 flex-shrink-0 opacity-0 group-hover:opacity-100 transition-opacity" style={{ color: MUTED }} />
+                    <ExternalLink className="w-3.5 h-3.5 flex-shrink-0 opacity-60" style={{ color: MUTED }} />
                   </motion.a>
                 ))}
               </div>
@@ -1353,20 +1367,17 @@ export default function Portfolio() {
 
       {/* ── FOOTER ── */}
       <footer className="border-t py-8 text-center relative z-10" style={{ borderColor: CARD_BORDER }}>
-        <p className="text-xs" style={{ color: MUTED }}>
+        <p className="text-xs px-4" style={{ color: MUTED }}>
           © 2026 <span style={{ color: ACCENT, fontWeight: 700 }}>Vinay Raj V</span> · Shivamogga, Karnataka
-          <span className="mx-2">·</span>
-          <a href="https://my-portfolio-nmj4.vercel.app/" target="_blank" rel="noopener noreferrer"
-            style={{ color: ACCENT, fontWeight: 700, textDecoration: "none" }}>my-portfolio-nmj4.vercel.app</a>
           <span className="mx-2">·</span>
           🇬🇧 UK Registered Design Holder · Crafted with ♥ &amp; lots of ☕
         </p>
       </footer>
 
       {/* ── FLOATING BUTTONS ── */}
-      <motion.button whileHover={{ scale: 1.12 }} whileTap={{ scale: 0.92 }}
+      <motion.button whileTap={{ scale: 0.92 }}
         onClick={() => setChatOpen(v => !v)}
-        className="fixed bottom-6 right-6 z-[150] w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-2xl"
+        className="fixed bottom-6 right-4 z-[150] w-14 h-14 rounded-2xl flex items-center justify-center text-white shadow-2xl"
         style={{ background: "linear-gradient(135deg, #8b5cf6, #6366f1)", boxShadow: "0 8px 32px rgba(139,92,246,0.4)" }}>
         {chatOpen ? <X className="w-6 h-6" /> : <MessageCircle className="w-6 h-6" />}
       </motion.button>
@@ -1374,9 +1385,9 @@ export default function Portfolio() {
       <AnimatePresence>
         {showTop && (
           <motion.button initial={{ opacity: 0, scale: 0.5 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.5 }}
-            whileHover={{ scale: 1.1 }} whileTap={{ scale: 0.9 }}
+            whileTap={{ scale: 0.9 }}
             onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-            className="fixed bottom-6 left-6 z-[150] w-12 h-12 rounded-2xl flex items-center justify-center"
+            className="fixed bottom-6 left-4 z-[150] w-12 h-12 rounded-2xl flex items-center justify-center"
             style={{ background: CARD_BG, border: `0.5px solid ${CARD_BORDER}`, color: ACCENT, boxShadow: CARD_SHADOW }}>
             <ArrowUp className="w-5 h-5" />
           </motion.button>
