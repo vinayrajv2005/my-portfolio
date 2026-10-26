@@ -146,7 +146,38 @@ const patents = [
   },
 ];
 
-const NAV = ["home", "about", "projects", "patents", "skills", "education", "achievements", "contact"];
+// ✅ NEW: Experience data
+const experience = [
+  {
+    id: "sustune",
+    role: "Technology Research Intern",
+    company: "Sustune Technologies Pvt. Ltd.",
+    location: "Bangalore, Karnataka",
+    period: "16 Feb 2026 – 23 Aug 2026",
+    accent: "#10B981",
+    summary:
+      "Studied data analytics end to end and built Lakehouse-based analytics solutions. Overall performance assessed as excellent; cleared the final assessment within the stipulated time.",
+    highlights: [
+      "Designed normalized relational schemas and data models",
+      "Developed end-to-end Lakehouse ETL pipelines on Microsoft Fabric",
+      "Implemented Row-Level Security (RLS) for data governance",
+      "Built analytics solutions: Road Condition Image Processing and Retail Revenue Capstone",
+    ],
+    tags: ["Python", "Microsoft Fabric", "Lakehouse", "ETL", "Data Modelling", "RLS", "Sustainability R&D"],
+    // Reuses CertificateModal (needs title / issuer / date / icon / accent / certificate)
+    cert: {
+      title: "Internship Certificate — Technology Research Intern",
+      issuer: "Sustune Technologies",
+      date: "Aug 2026",
+      icon: Award,
+      accent: "#10B981",
+      certificate: "/Sustune_Internship_Certificate.pdf",
+    },
+  },
+];
+
+// ✅ CHANGED: added "experience"
+const NAV = ["home", "about", "projects", "patents", "skills", "experience", "education", "achievements", "contact"];
 
 // ═══════════════════════════════════════════════════════════════
 // DETECT TOUCH DEVICE
@@ -1242,6 +1273,66 @@ export default function Portfolio() {
         <div className="max-w-6xl mx-auto">
           <SectionHead dark={dark} eyebrow="What I Work With" title="Tech Stack" gradient={["#ec4899", "#f97316"]} />
           <SkillCategoriesGrid dark={dark} />
+        </div>
+      </Section>
+
+      {/* ── EXPERIENCE (NEW) ── */}
+      <Section id="experience" className="py-24 px-4">
+        <div className="max-w-4xl mx-auto">
+          <SectionHead dark={dark} eyebrow="Where I've Worked" title="Experience" gradient={["#10b981", "#06b6d4"]} />
+          {experience.map((x, i) => (
+            <motion.div key={x.id} initial={{ opacity: 0, y: 40 }} whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }} transition={{ delay: i * 0.1 }}
+              className="rounded-3xl overflow-hidden relative"
+              style={{ background: CARD_BG, border: `1px solid ${x.accent}40`, boxShadow: CARD_SHADOW }}>
+              <div className="h-1.5 w-full" style={{ background: `linear-gradient(90deg, ${x.accent}, #06b6d4)` }} />
+              <div className="p-6 md:p-8 space-y-5">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div className="flex items-start gap-4">
+                    <div className="w-12 h-12 rounded-2xl flex items-center justify-center flex-shrink-0"
+                      style={{ background: x.accent + "20", border: `1px solid ${x.accent}40` }}>
+                      <Award className="w-6 h-6" style={{ color: x.accent }} />
+                    </div>
+                    <div>
+                      <h3 className="text-lg md:text-xl font-black leading-tight" style={{ color: TEXT }}>{x.role}</h3>
+                      <p className="text-sm font-semibold" style={{ color: x.accent }}>{x.company}</p>
+                      <p className="text-xs flex items-center gap-1 mt-1" style={{ color: MUTED }}>
+                        <MapPin className="w-3 h-3" /> {x.location}
+                      </p>
+                    </div>
+                  </div>
+                  <span className="text-xs font-mono px-3 py-1 rounded-full flex items-center gap-1.5"
+                    style={{ background: x.accent + "15", color: x.accent, border: `0.5px solid ${x.accent}30` }}>
+                    <Calendar className="w-3 h-3" /> {x.period}
+                  </span>
+                </div>
+
+                <p className="text-sm leading-relaxed" style={{ color: MUTED }}>{x.summary}</p>
+
+                <ul className="space-y-2">
+                  {x.highlights.map(h => (
+                    <li key={h} className="flex items-start gap-2 text-sm" style={{ color: MUTED }}>
+                      <span className="mt-1.5 w-1.5 h-1.5 rounded-full flex-shrink-0" style={{ background: x.accent }} />
+                      {h}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="flex flex-wrap gap-1.5">
+                  {x.tags.map(t => (
+                    <span key={t} className="px-2.5 py-1 rounded-full text-xs font-bold"
+                      style={{ background: x.accent + "18", color: x.accent, border: `0.5px solid ${x.accent}40` }}>{t}</span>
+                  ))}
+                </div>
+
+                <motion.button whileTap={{ scale: 0.97 }} onClick={() => setSelectedCert(x.cert)}
+                  className="flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-bold text-white"
+                  style={{ background: "linear-gradient(135deg,#10b981,#06b6d4)", boxShadow: "0 8px 24px rgba(16,185,129,0.3)" }}>
+                  <Eye className="w-4 h-4" /> View Internship Certificate
+                </motion.button>
+              </div>
+            </motion.div>
+          ))}
         </div>
       </Section>
 
